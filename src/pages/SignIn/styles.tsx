@@ -53,6 +53,14 @@ export const Content = styled.div`
     }
   }
 `;
+export const Credits = styled.p`
+  display: flex;
+  position: absolute;
+  padding: 0 0 0 10px;
+  margin: 0;
+  color: #8b8b8b;
+  top: calc(100% - 25px);
+`;
 
 export const Background = styled.div`
   flex: 1;
