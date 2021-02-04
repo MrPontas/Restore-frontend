@@ -1,8 +1,10 @@
 export interface CategoryProps {
+  id: string;
   name: string;
   description?: string;
 }
 export interface MoldProps {
+  id: string;
   name: string;
 }
 

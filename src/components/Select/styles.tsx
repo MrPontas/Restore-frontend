@@ -11,9 +11,16 @@ export const Container = styled.div`
   align-items: left;
   margin: 0 !important;
   p {
-    display: block;
-    margin: 0 0 5px 18px;
+    display: flex;
+    margin: 0 0px 5px 35px;
     flex-direction: center;
+  }
+  div {
+    p {
+      display: flex;
+      text-align: left;
+      /* margin-left: 30px; */
+    }
   }
   select {
     display: block;

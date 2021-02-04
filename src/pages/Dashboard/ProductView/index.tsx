@@ -1,15 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { useParams } from 'react-router-dom';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { FaRegEdit } from 'react-icons/fa';
 import * as Yup from 'yup';
+import { CgUnavailable } from 'react-icons/cg';
+import { BsCheckBox } from 'react-icons/bs';
 
 import api from '../../../services/api';
 import LabelInput from '../../../components/LabelInput';
 
-import { Container, InputForm, ButtonDiv } from './styles';
+import {
+  Container,
+  InputForm,
+  ButtonDiv,
+  Status,
+  TooltipI,
+  TooltipO,
+} from './styles';
 import Title from '../../../components/Title';
 import Button from '../../../components/Button';
 import Select from '../../../components/Select';
@@ -20,21 +30,12 @@ import getValidationErrors from '../../../utils/getValidationErrors';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-      },
-      color: '#000',
-    },
-    div: {
-      maxWidth: '100px',
-      width: '100%',
-    },
-    input: {
-      borderColor: '#000',
-    },
     load: {
       display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
       '& > * + *': {
         marginLeft: theme.spacing(2),
       },
@@ -50,102 +51,100 @@ interface ParamsProps {
 }
 
 const genreOptions = [
-  { key: 'F', text: 'Feminino' },
-  { key: 'M', text: 'Masculino' },
+  { id: 'F', name: 'Feminino' },
+  { id: 'M', name: 'Masculino' },
 ];
 
 interface Options {
-  key: string;
-  text: string;
+  id: string;
+  name: string;
 }
 
 const sizeOptions: Options[] = [
-  { key: 'PP', text: 'PP' },
-  { key: 'P', text: 'P' },
-  { key: 'M', text: 'M' },
-  { key: 'G', text: 'G' },
-  { key: 'GG', text: 'GG' },
-  { key: '33', text: '33' },
-  { key: '34', text: '34' },
-  { key: '35', text: '35' },
-  { key: '36', text: '36' },
-  { key: '37', text: '37' },
-  { key: '38', text: '38' },
-  { key: '39', text: '39' },
-  { key: '40', text: '40' },
-  { key: '41', text: '41' },
-  { key: '42', text: '42' },
-  { key: '43', text: '43' },
-  { key: '44', text: '44' },
-  { key: '45', text: '45' },
-  { key: '46', text: '46' },
-  { key: '47', text: '47' },
-  { key: '48', text: '48' },
-  { key: '49', text: '49' },
-  { key: '50', text: '50' },
-  { key: '51', text: '51' },
-  { key: '52', text: '52' },
+  { id: 'PP', name: 'PP' },
+  { id: 'P', name: 'P' },
+  { id: 'M', name: 'M' },
+  { id: 'G', name: 'G' },
+  { id: 'GG', name: 'GG' },
+  { id: '33', name: '33' },
+  { id: '34', name: '34' },
+  { id: '35', name: '35' },
+  { id: '36', name: '36' },
+  { id: '37', name: '37' },
+  { id: '38', name: '38' },
+  { id: '39', name: '39' },
+  { id: '40', name: '40' },
+  { id: '41', name: '41' },
+  { id: '42', name: '42' },
+  { id: '43', name: '43' },
+  { id: '44', name: '44' },
+  { id: '45', name: '45' },
+  { id: '46', name: '46' },
+  { id: '47', name: '47' },
+  { id: '48', name: '48' },
+  { id: '49', name: '49' },
+  { id: '50', name: '50' },
+  { id: '51', name: '51' },
+  { id: '52', name: '52' },
 ];
 
 const ProductView: React.FC = () => {
+  const classes = useStyles();
   const { id } = useParams<ParamsProps>();
   const formRef = useRef<FormHandles>(null);
-  const initialMoldState: Options = {
-    key: '',
-    text: '',
-  };
   const { addToast } = useToast();
 
   const [readOnly, setReadOnly] = useState(true);
+
   // const { register, handleSubmit } = useForm();
   const [edition, setEdition] = useState(false);
-  const [molds, setMolds] = useState<MoldProps[]>({} as MoldProps[]);
-  const [moldsOptions] = useState<Options[]>({} as Options[]);
+  const [molds, setMolds] = useState<MoldProps[] | undefined>(undefined);
+  const [provider, setProviders] = useState<MoldProps[] | undefined>(undefined);
+
+  // let moldsOptions = {} as Options[];
   const [product, setProduct] = useState<ProductProps | undefined>(undefined);
   const [categories, setCategories] = useState<CategoryProps[] | undefined>(
     undefined
   );
 
-  const handleSubmit = useCallback(async (data: ProductProps) => {
-    try {
-      formRef.current?.setErrors({});
-      setEdition(false);
-      setReadOnly(true);
+  const handleSubmit = useCallback(
+    async (data: ProductProps) => {
+      try {
+        formRef.current?.setErrors({});
+        setEdition(false);
+        setReadOnly(true);
 
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        category: Yup.string().required('Categoria obrigatória'),
-      });
-      await schema.validate(data, {
-        abortEarly: false,
-      });
-      addToast({
-        title: 'Informações alteradas com sucesso.',
-        type: 'success',
-      });
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          color: Yup.string().required('Cor obrigatória'),
+          marca: Yup.string().required('Categoria obrigatória'),
+        });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+        addToast({
+          title: 'Informações alteradas com sucesso.',
+          type: 'success',
+        });
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
 
-        return;
+          return;
+        }
+
+        setEdition(true);
+
+        addToast({
+          title: 'Erro',
+          type: 'error',
+          description: 'Verifique as informações',
+        });
       }
-
-      setEdition(true);
-
-      addToast({
-        title: 'Erro',
-        type: 'error',
-        description: 'Verifique as informações',
-      });
-    }
-  }, []);
-  // const handleMoldOptions = useCallback(() => {
-  //   molds.map((mold) => (
-  //     moldsOptions.push({ key: mold.name, text: mold.name });
-  //   );
-  //   console.log('oijefa');
-  // }, [molds, moldsOptions]);
+    },
+    [addToast]
+  );
 
   useEffect(() => {
     api.get(`products/${id}`).then((response) => {
@@ -162,20 +161,37 @@ const ProductView: React.FC = () => {
       setMolds(response.data);
     });
   }, []);
+  useEffect(() => {
+    api.get(`providers`).then((response) => {
+      setProviders(response.data);
+    });
+  }, []);
 
   const handleEdition = (): void => {
     setEdition(true);
     setReadOnly(false);
   };
 
-  // useCallback(() => {
-  //   categories?.map((category) =>
-  //     categoriesOptions.push({ key: category.name, text: category.name })
-  //   );
-  //   console.log('oasdjfsaio');
-  // }, [categories]);
+  // useEffect(() => {
+  // molds.map((mold) => moldsOptions.push({ key: mold.id, text: mold.name }));
+  // molds.map((mold) => {
+  //   setMoldsOptions([...moldsOptions, { key: mold.id, text: mold.name }]);
+  // });
+  // setMoldsOptions([
+  //   ...moldsOptions,
+  //   ...molds.map((mold) => ({
+  //     key: mold.id,
+  //     text: mold.name,
+  //   })),
+  // ]);
+  //   for (let i = 0; i < molds.length; i + 1)
+  //     setMoldsOptions([
+  //       ...moldsOptions,
+  //       { key: molds[i].id, text: molds[i].name },
+  //     ]);
+  // }, [molds, moldsOptions]);
 
-  if (product && Object.keys(moldsOptions).length === 0) {
+  if (product) {
     return (
       <Container>
         <Title>
@@ -187,9 +203,22 @@ const ProductView: React.FC = () => {
             Editar
           </Button>
         </ButtonDiv>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h2>Informações</h2>
 
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <h1>Informações</h1>
+
+          <Status>
+            <h2>Status:</h2>
+            {product.status === 'I' ? (
+              <TooltipI title="Em estoque">
+                <BsCheckBox size={30} />
+              </TooltipI>
+            ) : (
+              <TooltipO title="Indisponível">
+                <CgUnavailable size={30} />
+              </TooltipO>
+            )}
+          </Status>
           <InputForm>
             <div>
               <LabelInput
@@ -198,13 +227,7 @@ const ProductView: React.FC = () => {
                 defaultValue={product.name}
                 readOnly={readOnly}
               />
-              <LabelInput
-                name="category"
-                label="Categoria"
-                placeholder="Usuário"
-                defaultValue={product.category.name}
-                readOnly={readOnly}
-              />
+
               <LabelInput
                 name="color"
                 label="Cor"
@@ -218,86 +241,66 @@ const ProductView: React.FC = () => {
                 defaultValue={product.brand}
                 readOnly={readOnly}
               />
-            </div>
-            <div>
               <Select
                 options={genreOptions}
                 label="Gênero"
-                defaultValue={product.size}
+                defaultValue={product.genre}
                 readOnly={readOnly}
               />
               <Select
                 options={sizeOptions}
                 label="Tamanho"
+                defaultValue={product.size}
                 readOnly={readOnly}
               />
-              <LabelInput
-                name="mold"
+            </div>
+            <div>
+              <Select
+                options={molds}
                 label="Modelo"
                 defaultValue={product.mold.name}
                 readOnly={readOnly}
               />
-              <LabelInput
-                name="provider"
+
+              <Select
+                options={provider}
                 label="Fornecedor"
-                defaultValue={product.provider.name}
+                defaultValue={product.category.name}
+                readOnly={readOnly}
+              />
+              <Select
+                options={categories}
+                label="Categorias"
+                defaultValue={product.category.name}
+                readOnly={readOnly}
+              />
+            </div>
+          </InputForm>
+          <h1>Valores</h1>
+          <InputForm>
+            <div>
+              <LabelInput
+                name="Valor de compra"
+                label="Valor de compra"
+                defaultValue={product.purchase_value}
                 readOnly={readOnly}
               />
             </div>
           </InputForm>
 
-          {/* <h2>Login</h2>
-
-          <InputForm>
-            <div>
-              <LabelInput
-                name="category"
-                label="Categoria"
-                placeholder="selecione..."
-                defaultValue={product.category.name}
-                readOnly={readOnly}
-              />
-              <LabelInput
-                name="mold"
-                label="Modelo"
-                defaultValue={product.mold.name}
-                readOnly={readOnly}
-              />
-              <LabelInput
-                name="color"
-                label="Cor"
-                defaultValue={product.name}
-                readOnly={readOnly}
-              />
-              <LabelInput
-                name="category"
-                label="Categoria"
-                defaultValue={product.category.name}
-                readOnly={readOnly}
-              />
-            </div>
-            <div>
-              <LabelInput
-                name="mold"
-                label="Modelo"
-                defaultValue={product.mold.name}
-                readOnly={readOnly}
-              />
-              <LabelInput
-                name="category"
-                label="Nome"
-                defaultValue={product.name}
-                readOnly={readOnly}
-              />
-            </div>
-          </InputForm> */}
           {edition && <Button type="submit">Salvar</Button>}
         </Form>
       </Container>
     );
   }
 
-  return <h1>Carregando</h1>;
+  return (
+    <Container className={classes.load}>
+      <div>
+        <CircularProgress />
+      </div>
+    </Container>
+  );
 };
 
 export default ProductView;

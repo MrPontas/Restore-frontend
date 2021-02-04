@@ -1,3 +1,4 @@
+import { CircularProgress } from '@material-ui/core';
 import React, {
   SelectHTMLAttributes,
   useCallback,
@@ -8,9 +9,9 @@ import React, {
 import { Container, Content } from './styles';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: {
-    key: string;
-    text: string;
+  options?: {
+    id: string;
+    name: string;
   }[];
   label: string;
   readOnly?: boolean;
@@ -29,18 +30,37 @@ const Select: React.FC<SelectProps> = ({
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
   }, []);
+  if (options && Object.keys(options).length !== 0) {
+    return (
+      <Container>
+        <p>{label}</p>
+        <Content isFocused={isFocused} readOnly={readOnly}>
+          <select
+            onFocus={handleInputFocus}
+            ref={inputRef}
+            onBlur={handleInputBlur}
+          >
+            {options.map((option) => (
+              <option key={option.id}>{option.name}</option>
+            ))}
+          </select>
+        </Content>
+      </Container>
+    );
+  }
   return (
     <Container>
-      <p>{label}</p>
+      <div>
+        <p>{label}</p>
+        <CircularProgress size={15} />
+      </div>
       <Content isFocused={isFocused} readOnly={readOnly}>
         <select
           onFocus={handleInputFocus}
           ref={inputRef}
           onBlur={handleInputBlur}
         >
-          {options.map((option) => (
-            <option key={option.key}>{option.text}</option>
-          ))}
+          <option>Carregando...</option>
         </select>
       </Content>
     </Container>
