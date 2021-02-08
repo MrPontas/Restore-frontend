@@ -7,7 +7,22 @@ interface ContainerProps {
   isErrored: boolean;
 }
 
-export const Container = styled.div<ContainerProps>`
+export const Container = styled.div`
+  margin-bottom: 10px;
+  flex-direction: column;
+  align-items: left;
+  max-width: 20px;
+  p {
+    display: block;
+    margin: 0 0 5px 18px;
+    flex-direction: center;
+  }
+  Input {
+    display: block;
+  }
+`;
+
+export const Content = styled.div<ContainerProps>`
   border-radius: 5px;
 
   padding: 16px;
@@ -43,7 +58,6 @@ export const Container = styled.div<ContainerProps>`
 
   svg {
     margin-right: 16px;
-    color: #232129;
 
     ${(props) =>
       props.isFocused &&

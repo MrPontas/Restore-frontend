@@ -9,16 +9,21 @@ import { useAuth } from '../../hooks/AuthContext';
 import Route from '../../routes/Route';
 import Products from './Products';
 import ProductView from './ProductView';
+import { UserProps } from '../../utils/props';
+import Registers from './Registers';
+import RegisterView from './RegisterView';
+import AddRegister from './Add Register';
 
 const Dashboard: React.FC = () => {
   const { signOut } = useAuth();
-  const userString = localStorage.getItem('@ReStore:user');
 
-  if (!userString) {
+  const user = localStorage.getItem('@ReStore:user');
+
+  if (!user) {
     throw new Error(`Can't find authenticated user.`);
   }
-  const user = JSON.parse(userString);
-  const name = user.name.split(' ');
+  const userObject: UserProps = JSON.parse(user);
+  const name = userObject.name.split(' ');
   return (
     <Container>
       <Header>
@@ -39,8 +44,24 @@ const Dashboard: React.FC = () => {
           isPrivate
         />
         <Route
+          path="/dashboard/registers"
+          exact
+          component={Registers}
+          isPrivate
+        />
+        <Route
           path="/dashboard/productView/:id"
           component={ProductView}
+          isPrivate
+        />
+        <Route
+          path="/dashboard/registerView/:id"
+          component={RegisterView}
+          isPrivate
+        />
+        <Route
+          path="/dashboard/addRegister"
+          component={AddRegister}
           isPrivate
         />
       </Switch>

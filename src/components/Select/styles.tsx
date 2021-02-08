@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   isFocused: boolean;
-  readOnly: boolean;
+  readOnly?: boolean;
 }
 
 export const Container = styled.div`
@@ -44,11 +44,15 @@ export const Content = styled.div<ContainerProps>`
     css`
       border-color: #82af99;
     `}
-
+  &:focus {
+    border-color: #82af99;
+  }
   select {
     ${(props) =>
       props.readOnly &&
       css`
+        border-color: #82af99;
+
         pointer-events: none;
       `}
     color: #232129;
@@ -64,8 +68,5 @@ export const Content = styled.div<ContainerProps>`
     option {
       display: flex;
     }
-  }
-  &:focus {
-    border-color: #82af99;
   }
 `;

@@ -1,7 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useParams } from 'react-router-dom';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { FaRegEdit } from 'react-icons/fa';
@@ -11,6 +15,7 @@ import { BsCheckBox } from 'react-icons/bs';
 
 import api from '../../../services/api';
 import LabelInput from '../../../components/LabelInput';
+import InputFloat from '../../../components/InputFloat';
 
 import {
   Container,
@@ -22,29 +27,17 @@ import {
 } from './styles';
 import Title from '../../../components/Title';
 import Button from '../../../components/Button';
-import Select from '../../../components/Select';
+import Select, { Options } from '../../../components/Select';
 
-import { CategoryProps, MoldProps, ProductProps } from '../../../utils/props';
+import {
+  CategoryProps,
+  MoldProps,
+  ProductProps,
+  ProviderProps,
+} from '../../../utils/props';
 import { useToast } from '../../../hooks/ToastContext';
 import getValidationErrors from '../../../utils/getValidationErrors';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    load: {
-      display: 'flex',
-      alignItems: 'center',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      '& > * + *': {
-        marginLeft: theme.spacing(2),
-      },
-      '& .MuiCircularProgress-root': {
-        borderColor: '#000',
-      },
-    },
-  })
-);
+import Loading from '../../../components/Loading';
 
 interface ParamsProps {
   id: string;
@@ -55,10 +48,10 @@ const genreOptions = [
   { id: 'M', name: 'Masculino' },
 ];
 
-interface Options {
-  id: string;
-  name: string;
-}
+const typeOptions = [
+  { id: 'C', name: 'Consignado' },
+  { id: 'O', name: 'Próprio' },
+];
 
 const sizeOptions: Options[] = [
   { id: 'PP', name: 'PP' },
@@ -89,61 +82,139 @@ const sizeOptions: Options[] = [
 ];
 
 const ProductView: React.FC = () => {
-  const classes = useStyles();
   const { id } = useParams<ParamsProps>();
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
 
   const [readOnly, setReadOnly] = useState(true);
 
-  // const { register, handleSubmit } = useForm();
   const [edition, setEdition] = useState(false);
-  const [molds, setMolds] = useState<MoldProps[] | undefined>(undefined);
-  const [provider, setProviders] = useState<MoldProps[] | undefined>(undefined);
-
-  // let moldsOptions = {} as Options[];
-  const [product, setProduct] = useState<ProductProps | undefined>(undefined);
   const [categories, setCategories] = useState<CategoryProps[] | undefined>(
     undefined
   );
+  const [molds, setMolds] = useState<MoldProps[] | undefined>(undefined);
+  const [providers, setProviders] = useState<ProviderProps[] | undefined>(
+    undefined
+  );
+  const [product, setProduct] = useState<ProductProps | undefined>(undefined);
+  const [sizeSelect, setSizeSelect] = useState('');
+  const [genreSelect, setGenreSelect] = useState('');
+  const [typeSelect, setTypeSelect] = useState('');
+  const [moldSelect, setMoldSelect] = useState('');
+  const [categorySelect, setCategorySelect] = useState('');
+  const [providerSelect, setProviderSelect] = useState('');
+
+  // const regExp = '/([0-9]{3}),([0-9]{2}$)/g';
+
+  const handleEdition = (): void => {
+    if (edition) return;
+    setEdition(true);
+    setReadOnly(false);
+    addToast({
+      title: 'Modo edição',
+      description: 'Agora você pode editar as informações',
+      type: 'info',
+    });
+  };
+  const handleCatchEdition = useCallback(() => {
+    setEdition(true);
+    setReadOnly(false);
+  }, []);
 
   const handleSubmit = useCallback(
-    async (data: ProductProps) => {
-      try {
-        formRef.current?.setErrors({});
-        setEdition(false);
-        setReadOnly(true);
+    async (data) => {
+      formRef.current?.setErrors({});
 
+      // let userObject: UserProps = { id: '', name: '', administrator: false };
+      // const user = localStorage.getItem('@ReStore:user');
+      // if (user) userObject = JSON.parse(user);
+      // if (!moldSelect && product) setMoldSelect(product.mold.id);
+      // if (!typeSelect && product) setMoldSelect(product.purchase_type);
+      // if (!categorySelect && product) setCategorySelect(product.category.id);
+      // if (!providerSelect && product) setProviderSelect(product.provider.id);
+      // if (!genreSelect && product) setGenreSelect(product.genre);
+      // if (!sizeSelect && product) setSizeSelect(product.size);
+
+      try {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           color: Yup.string().required('Cor obrigatória'),
-          marca: Yup.string().required('Categoria obrigatória'),
+          brand: Yup.string().required('Marca obrigatória'),
+          purchase_value: Yup.string().required('Valor de compra obrigatório'),
+          sale_value: Yup.string().required('Valor de venda obrigatório'),
         });
         await schema.validate(data, {
           abortEarly: false,
+        });
+        const purchaseValueString: string = data.purchase_value
+          .replace('R$', '')
+          .replace(',', '.');
+        const purchaseValue = parseFloat(purchaseValueString);
+
+        const saleValueString: string = data.sale_value
+          .replace('R$', '')
+          .replace(',', '.');
+        const saleValue = parseFloat(saleValueString);
+        if (saleValue < purchaseValue) {
+          addToast({
+            title: 'Erro de valor',
+            description:
+              'O valor de compra não pode ser maior que o valor de venda',
+            type: 'error',
+          });
+          return;
+        }
+        // if (!user) {
+        //   throw new Error(`Não é possível encontrar o usuário autenticado.`);
+        // }
+
+        await api.put(`products/${product?.id}`, {
+          name: data.name,
+          color: data.color,
+          brand: data.brand,
+          purchase_value: purchaseValue,
+          sale_value: saleValue,
+          genre: genreSelect,
+          size: sizeSelect,
+          purchase_type: typeSelect,
+          category: categorySelect,
+          mold: moldSelect,
+          provider: providerSelect,
         });
         addToast({
           title: 'Informações alteradas com sucesso.',
           type: 'success',
         });
+        setEdition(false);
+        setReadOnly(true);
       } catch (err) {
+        handleCatchEdition();
+
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
-
           return;
         }
-
-        setEdition(true);
 
         addToast({
           title: 'Erro',
           type: 'error',
           description: 'Verifique as informações',
         });
+        throw new Error(err);
       }
     },
-    [addToast]
+    [
+      moldSelect,
+      product,
+      categorySelect,
+      providerSelect,
+      genreSelect,
+      sizeSelect,
+      typeSelect,
+      addToast,
+      handleCatchEdition,
+    ]
   );
 
   useEffect(() => {
@@ -167,31 +238,50 @@ const ProductView: React.FC = () => {
     });
   }, []);
 
-  const handleEdition = (): void => {
-    setEdition(true);
-    setReadOnly(false);
-  };
+  const handleType = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { selectedIndex } = e.target.options;
+    const eventType = e.target.options[selectedIndex].getAttribute('id');
+    if (eventType) {
+      setTypeSelect(eventType);
+    }
+  }, []);
+  const handleMold = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { selectedIndex } = e.target.options;
+    const eventMold = e.target.options[selectedIndex].getAttribute('id');
+    if (eventMold) {
+      setMoldSelect(eventMold);
+    }
+  }, []);
+  const handleCategory = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { selectedIndex } = e.target.options;
+    const eventCategory = e.target.options[selectedIndex].getAttribute('id');
+    if (eventCategory) {
+      setCategorySelect(eventCategory);
+    }
+  }, []);
+  const handleProvider = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { selectedIndex } = e.target.options;
+    const eventProvider = e.target.options[selectedIndex].getAttribute('id');
+    if (eventProvider) {
+      setProviderSelect(eventProvider);
+    }
+  }, []);
+  const handleGenre = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { selectedIndex } = e.target.options;
+    const eventGenre = e.target.options[selectedIndex].getAttribute('id');
+    if (eventGenre) {
+      setGenreSelect(eventGenre);
+    }
+  }, []);
+  const handleSize = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
+    const { selectedIndex } = e.target.options;
+    const eventSize = e.target.options[selectedIndex].getAttribute('id');
+    if (eventSize) {
+      setSizeSelect(eventSize);
+    }
+  }, []);
 
-  // useEffect(() => {
-  // molds.map((mold) => moldsOptions.push({ key: mold.id, text: mold.name }));
-  // molds.map((mold) => {
-  //   setMoldsOptions([...moldsOptions, { key: mold.id, text: mold.name }]);
-  // });
-  // setMoldsOptions([
-  //   ...moldsOptions,
-  //   ...molds.map((mold) => ({
-  //     key: mold.id,
-  //     text: mold.name,
-  //   })),
-  // ]);
-  //   for (let i = 0; i < molds.length; i + 1)
-  //     setMoldsOptions([
-  //       ...moldsOptions,
-  //       { key: molds[i].id, text: molds[i].name },
-  //     ]);
-  // }, [molds, moldsOptions]);
-
-  if (product) {
+  if (product && categories && molds && providers) {
     return (
       <Container>
         <Title>
@@ -242,13 +332,19 @@ const ProductView: React.FC = () => {
                 readOnly={readOnly}
               />
               <Select
+                name="genre"
+                id="genre"
                 options={genreOptions}
+                onChange={handleGenre}
                 label="Gênero"
                 defaultValue={product.genre}
                 readOnly={readOnly}
               />
               <Select
+                name="size"
+                id="size"
                 options={sizeOptions}
+                onChange={handleSize}
                 label="Tamanho"
                 defaultValue={product.size}
                 readOnly={readOnly}
@@ -256,21 +352,41 @@ const ProductView: React.FC = () => {
             </div>
             <div>
               <Select
+                name="type"
+                id="type"
+                options={typeOptions}
+                onChange={handleType}
+                label="Tipo de compra"
+                defaultValue={
+                  product.purchase_type === 'O' ? 'Próprio' : 'Consignado'
+                }
+                readOnly={readOnly}
+              />
+              <Select
+                name="mold"
+                id="mold"
                 options={molds}
+                onChange={handleMold}
                 label="Modelo"
                 defaultValue={product.mold.name}
                 readOnly={readOnly}
               />
 
               <Select
-                options={provider}
+                name="provider"
+                id="provider"
+                options={providers}
+                onChange={handleProvider}
                 label="Fornecedor"
-                defaultValue={product.category.name}
+                defaultValue={product.provider.name}
                 readOnly={readOnly}
               />
               <Select
+                name="category"
+                id="category"
                 options={categories}
-                label="Categorias"
+                onChange={handleCategory}
+                label="Categoria"
                 defaultValue={product.category.name}
                 readOnly={readOnly}
               />
@@ -279,12 +395,38 @@ const ProductView: React.FC = () => {
           <h1>Valores</h1>
           <InputForm>
             <div>
-              <LabelInput
-                name="Valor de compra"
+              <InputFloat
+                name="purchase_value"
+                id="purchase_value"
                 label="Valor de compra"
                 defaultValue={product.purchase_value}
                 readOnly={readOnly}
               />
+              {/* <InputFloat
+                label="Valor de compra"
+                name="purchaseValue"
+                defaultValue={product.purchase_value}
+                readOnly={readOnly}
+              /> */}
+              <InputFloat
+                label="Valor de venda"
+                name="sale_value"
+                id="sale_value"
+                defaultValue={product.sale_value}
+                readOnly={readOnly}
+              />
+              {/* <LabelInput
+                name="purchaseValue"
+                label="Valor de compra"
+                defaultValue={handleFloatValue(product.purchase_value)}
+                readOnly={readOnly}
+              />
+              <LabelInput
+                name="saleValue"
+                label="Valor de Venda"
+                defaultValue={handleFloatValue(product.sale_value)}
+                readOnly={readOnly}
+              /> */}
             </div>
           </InputForm>
 
@@ -294,13 +436,7 @@ const ProductView: React.FC = () => {
     );
   }
 
-  return (
-    <Container className={classes.load}>
-      <div>
-        <CircularProgress />
-      </div>
-    </Container>
-  );
+  return <Loading />;
 };
 
 export default ProductView;

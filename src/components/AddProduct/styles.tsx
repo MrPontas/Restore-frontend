@@ -1,16 +1,12 @@
 import styled from 'styled-components';
-import Tooltip from '../../../components/Tooltip';
+import Tooltip from '../Tooltip';
 
 export const Container = styled.div`
   display: flex;
   height: auto;
-  position: fixed;
-  top: 70px;
-  left: 178px;
-  right: 0;
-  bottom: 0;
+  position: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   background-color: #fff;
   color: #000;
   form {

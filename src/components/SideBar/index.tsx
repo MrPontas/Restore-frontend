@@ -1,71 +1,80 @@
-import React, { ButtonHTMLAttributes, useState } from 'react';
+import React from 'react';
 
 import { VscSymbolKeyword } from 'react-icons/vsc';
 import { RiShirtLine } from 'react-icons/ri';
 import { FiUsers } from 'react-icons/fi';
 import { MdChromeReaderMode } from 'react-icons/md';
-import { GiFactory } from 'react-icons/gi';
 import { IoIosPaper } from 'react-icons/io';
-import { BiGridAlt } from 'react-icons/bi';
-import { NavLink } from 'react-router-dom';
 
-import { makeStyles } from '@material-ui/core';
-import { Container, Button } from './styles';
+import { Container, StyledNavLink } from './styles';
+import logoHeader from '../../assets/logo.png';
 
-interface SideBarProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isActive: boolean;
-}
+const activeStyle: React.CSSProperties = {
+  backgroundColor: '#82af99',
+  color: 'white',
+};
+const style: React.CSSProperties = {
+  display: 'flex',
+  fontSize: '18px',
+  fontWeight: 'lighter',
+  textDecoration: 'none',
+  maxHeight: '50px',
+  height: '100%',
+  marginTop: '5px',
+  padding: '-10px 0 0 0',
+  borderRadius: '5px',
+  alignItems: 'center',
+};
 
 const SideBar: React.FC = () => {
-  const [isActiveProduct, setIsActiveProduct] = useState(false);
   return (
     <Container>
       <header>
-        <div />
+        <div>
+          <img src={logoHeader} alt="" />
+        </div>
       </header>
-      <NavLink to="/dashboard/registers" style={{ textDecoration: 'none' }}>
-        <Button type="button">
-          <VscSymbolKeyword size={30} />
-          Registros
-        </Button>
-      </NavLink>
+      <StyledNavLink
+        to="/dashboard/registers"
+        activeStyle={activeStyle}
+        style={style}
+      >
+        <VscSymbolKeyword size={30} />
+        Registros
+      </StyledNavLink>
 
-      <NavLink to="/dashboard/products" style={{ textDecoration: 'none' }}>
-        <Button type="button">
-          <RiShirtLine size={30} />
-          Produtos
-        </Button>
-      </NavLink>
-      <NavLink to="/dashboard/categories" style={{ textDecoration: 'none' }}>
-        <Button type="button">
-          <MdChromeReaderMode size={30} />
-          Categorias
-        </Button>
-      </NavLink>
-      <NavLink to="/dashboard/providers" style={{ textDecoration: 'none' }}>
-        <Button type="button">
-          <GiFactory size={30} />
-          Fornecedores
-        </Button>
-      </NavLink>
-      <NavLink to="/dashboard/molds" style={{ textDecoration: 'none' }}>
-        <Button type="button">
-          <BiGridAlt size={30} />
-          Modelos
-        </Button>
-      </NavLink>
-      <NavLink to="/dashboard/report" style={{ textDecoration: 'none' }}>
-        <Button type="button">
-          <IoIosPaper size={30} />
-          Relatórios
-        </Button>
-      </NavLink>
-      <NavLink to="/dashboard/users" style={{ textDecoration: 'none' }}>
-        <Button type="button">
-          <FiUsers size={30} />
-          Usuários
-        </Button>
-      </NavLink>
+      <StyledNavLink
+        to="/dashboard/products"
+        activeStyle={activeStyle}
+        style={style}
+      >
+        <RiShirtLine size={30} />
+        Produtos
+      </StyledNavLink>
+      <StyledNavLink
+        to="/dashboard/categories"
+        activeStyle={activeStyle}
+        style={style}
+      >
+        <MdChromeReaderMode size={30} />
+        Categorias
+      </StyledNavLink>
+      <StyledNavLink
+        to="/dashboard/report"
+        activeStyle={activeStyle}
+        style={style}
+      >
+        <IoIosPaper size={30} />
+        Relatórios
+      </StyledNavLink>
+      <StyledNavLink
+        to="/dashboard/users"
+        activeStyle={activeStyle}
+        style={style}
+      >
+        <FiUsers size={30} />
+        Usuários
+      </StyledNavLink>
       <div />
     </Container>
   );

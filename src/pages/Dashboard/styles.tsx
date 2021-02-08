@@ -14,6 +14,7 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   align-items: stretch;
+  overflow-y: scroll;
 `;
 
 export const Header = styled.header`

@@ -1,12 +1,13 @@
+import { shade } from 'polished';
 import styled from 'styled-components';
-import Tooltip from '../../../components/Tooltip';
+import Button from '../../../components/Button';
 
 export const Container = styled.div`
   display: flex;
   height: auto;
   position: fixed;
   top: 70px;
-  left: 178px;
+  left: 182px;
   right: 0;
   bottom: 0;
   flex-direction: column;
@@ -26,6 +27,27 @@ export const Container = styled.div`
       color: white;
       max-width: 100px;
       margin-left: 15px;
+    }
+  }
+`;
+
+export const InfoDiv = styled.div`
+  padding-bottom: 40px;
+  margin-left: 65px;
+  width: calc(100% - 65px);
+  flex-direction: row;
+  /* margin-bottom: 50px; */
+  h1 {
+    display: flex;
+    margin: 0 0 20px 20px;
+  }
+  div {
+    display: flex;
+    margin-left: 20px;
+    h3 {
+      color: #444444;
+      margin-top: 5px;
+      margin-left: 10px;
     }
   }
 `;
@@ -55,12 +77,7 @@ export const ButtonDiv = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
-
-  button {
-    color: white;
-    width: 100px;
-    margin-right: 50px;
-  }
+  align-items: center;
 `;
 
 export const Status = styled.div`
@@ -72,27 +89,18 @@ export const Status = styled.div`
     margin-top: 10px;
   }
 `;
-
-export const TooltipI = styled(Tooltip)`
-  color: #82af99;
-
-  height: 15px;
-  width: 15px;
-  margin-left: 10px;
+export const ButtonExclude = styled(Button)`
+  display: flex;
+  place-content: center;
+  color: white;
+  background-color: #c74444;
+  width: 90px;
+  padding: 10px 0px;
+  margin-right: 50px;
   svg {
-    margin: 0;
+    margin-right: 5px;
   }
-  span {
-    background-color: #82af99;
-  }
-`;
-
-export const TooltipO = styled(Tooltip)`
-  color: #c53030;
-  height: 15px;
-  width: 15px;
-  margin-left: 10px;
-  svg {
-    margin: 0;
+  &:hover {
+    background: ${shade(0.2, '#c74444')};
   }
 `;

@@ -9,6 +9,8 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import { useAuth } from '../../hooks/AuthContext';
 import { useToast } from '../../hooks/ToastContext';
 
+import logoImg from '../../assets/logo_completa.png';
+
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
@@ -63,10 +65,8 @@ const SignIn: React.FC = () => {
           {/* <img src={logoImg} alt=""/> */}
           {/* <h1 id= "logo" icon={GiClothes}> </h1> */}
           <div>
-            <GiClothes id="logo" />
-            <h1>Restore</h1>
+            <img src={logoImg} alt="" />
           </div>
-
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h1>Login</h1>
             <Input name="login" icon={FiUser} placeholder="Usuário" />

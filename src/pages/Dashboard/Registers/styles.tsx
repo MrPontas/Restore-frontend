@@ -26,3 +26,19 @@ export const ProductsHeader = styled.div`
     flex-direction: column;
   }
 `;
+
+export const ButtonDiv = styled.div`
+  display: flex;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+  button {
+    vertical-align: middle;
+
+    color: white;
+    width: 160px;
+    margin-right: 50px;
+  }
+`;

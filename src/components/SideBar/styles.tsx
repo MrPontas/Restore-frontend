@@ -1,10 +1,6 @@
 import { shade } from 'polished';
-import { ButtonHTMLAttributes } from 'react';
+import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-
-interface ContainerProps {
-  isActive?: boolean;
-}
 
 export const Container = styled.div`
   display: flex;
@@ -25,11 +21,17 @@ export const Container = styled.div`
     width: 100%;
 
     div {
+      display: flex;
       max-width: 180px;
       width: 100%;
       height: 70px;
-
+      align-items: center;
       border-bottom: 2px solid #a8a8a8;
+
+      img {
+        margin: 0 auto;
+        max-height: 70px;
+      }
     }
   }
 
@@ -39,7 +41,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Button = styled.button<ContainerProps>`
+export const StyledNavLink = styled(NavLink)`
   display: flex;
   position: relative;
 

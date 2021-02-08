@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 import signInBackground from '../../assets/background.jpeg';
+import LogoImg from '../../assets/logo.png';
 
 export const Container = styled.div`
   height: 100vh;
@@ -18,16 +19,13 @@ export const Content = styled.div`
   align-items: center;
 
   div {
-    display: flex;
-    color: #000;
-    align-self: center;
-    #logo {
-      font-size: 50px;
+    img {
+      max-width: 250px;
     }
   }
 
   form {
-    margin: 80px 0;
+    margin-bottom: 80px;
     width: 340px;
     text-align: center;
 

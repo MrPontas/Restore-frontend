@@ -14,9 +14,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { GrView } from 'react-icons/gr';
-import { ProductProps } from '../../utils/props';
+import { CircularProgress } from '@material-ui/core';
+import { RegisterProps } from '../../utils/props';
+import getHoursBr from '../../utils/getDateBr';
 import api from '../../services/api';
-import Loading from '../Loading';
+
 import { Message } from './styles';
 
 const alignTitle = 'left';
@@ -48,6 +50,16 @@ const useStyles = makeStyles({
     border: 'transparent',
     background: 'transparent',
   },
+  load: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    '& .MuiCircularProgress-root': {
+      borderColor: '#000',
+    },
+  },
 });
 
 const StyledTableRow = withStyles((theme: Theme) =>
@@ -72,61 +84,54 @@ const StyledTableRow = withStyles((theme: Theme) =>
 const CustomizedTables: React.FC = () => {
   const classes = useStyles();
 
-  const [products, setProducts] = useState<ProductProps[]>([]);
+  const [registers, setRegisters] = useState<RegisterProps[]>([]);
 
   useEffect(() => {
-    api.get('products').then((response) => {
-      setProducts(response.data);
+    api.get('registers').then((response) => {
+      setRegisters(response.data);
     });
   }, []);
 
-  if (products) {
+  if (registers) {
     return (
       <>
-        {products.length === 0 ? (
-          <Message>Parece que não há produtos :(</Message>
+        {registers.length === 0 ? (
+          <Message>Parece que não há registros :(</Message>
         ) : (
           <TableContainer component={Paper}>
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align={alignTitle}>Nome</StyledTableCell>
-                  <StyledTableCell align={alignTitle}>Modelo</StyledTableCell>
                   <StyledTableCell align={alignTitle}>
-                    Categoria
+                    Tipo de registro
                   </StyledTableCell>
-                  <StyledTableCell align={alignTitle}>Gênero</StyledTableCell>
-                  <StyledTableCell align={alignTitle}>Venda</StyledTableCell>
-                  <StyledTableCell align={alignTitle}>Status</StyledTableCell>
+                  <StyledTableCell align={alignTitle}>
+                    Data de criação
+                  </StyledTableCell>
+                  <StyledTableCell align={alignTitle}>
+                    Número de produtos
+                  </StyledTableCell>
+                  <StyledTableCell align={alignTitle}>Usuário</StyledTableCell>
                   <StyledTableCell align={alignTitle}> </StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.map((product) => (
-                  <StyledTableRow key={product.id}>
+                {registers.map((register) => (
+                  <StyledTableRow key={register.id}>
                     <StyledTableCell align="left">
-                      {product.name}
+                      {register.type === 'I' ? 'Entrada' : 'Saída'}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {product.mold.name}
+                      {getHoursBr(register.created_at)}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {product.category.name}
+                      {register.products.length}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {product.genre === 'F' ? 'Feminino' : 'Masculino'}
+                      {register.user.name}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      {product.sale_value.toLocaleString('pt-br', {
-                        style: 'currency',
-                        currency: 'BRL',
-                      })}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {product.status === 'I' ? 'Em estoque' : 'Indisponível'}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      <NavLink to={`/dashboard/productView/${product.id}`}>
+                      <NavLink to={`/dashboard/registerView/${register.id}`}>
                         <button
                           id="view-button"
                           type="button"
@@ -145,6 +150,12 @@ const CustomizedTables: React.FC = () => {
       </>
     );
   }
-  return <Loading />;
+  return (
+    <TableContainer className={classes.load}>
+      <div>
+        <CircularProgress />
+      </div>
+    </TableContainer>
+  );
 };
 export default CustomizedTables;

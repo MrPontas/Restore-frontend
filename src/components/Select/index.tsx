@@ -8,6 +8,11 @@ import React, {
 
 import { Container, Content } from './styles';
 
+export interface Options {
+  id: string;
+  name: string;
+}
+
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options?: {
     id: string;
@@ -15,13 +20,19 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   }[];
   label: string;
   readOnly?: boolean;
+  defaultValue?: string;
+  hasDefaultValue?: boolean;
 }
 const Select: React.FC<SelectProps> = ({
   options,
   label,
-  readOnly = false,
+  readOnly,
+  hasDefaultValue = false,
+  defaultValue = ' ',
+  ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+
   const inputRef = useRef<HTMLSelectElement>(null);
 
   const handleInputFocus = useCallback(() => {
@@ -30,6 +41,7 @@ const Select: React.FC<SelectProps> = ({
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
   }, []);
+
   if (options && Object.keys(options).length !== 0) {
     return (
       <Container>
@@ -39,9 +51,14 @@ const Select: React.FC<SelectProps> = ({
             onFocus={handleInputFocus}
             ref={inputRef}
             onBlur={handleInputBlur}
+            defaultValue={defaultValue}
+            {...rest}
           >
+            {hasDefaultValue && <option>Selecione...</option>}
             {options.map((option) => (
-              <option key={option.id}>{option.name}</option>
+              <option id={option.id} key={option.id}>
+                {option.name}
+              </option>
             ))}
           </select>
         </Content>
