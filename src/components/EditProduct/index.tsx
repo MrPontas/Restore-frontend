@@ -15,25 +15,63 @@ import InputFloat from '../InputFloat';
 
 import { Container, InputForm } from './styles';
 import Button from '../Button';
-import Select from '../Select';
+import Select, { Options } from '../Select';
 
 import {
   CategoryProps,
   MoldProps,
   ProviderProps,
   ProductProps,
-  sizeOptions,
-  typeOptions,
-  genreOptions,
 } from '../../utils/props';
 import { useToast } from '../../hooks/ToastContext';
 import getValidationErrors from '../../utils/getValidationErrors';
 
+const genreOptions = [
+  { id: 'F', name: 'Feminino' },
+  { id: 'M', name: 'Masculino' },
+];
+
+const typeOptions = [
+  { id: 'C', name: 'Consignado' },
+  { id: 'O', name: 'Próprio' },
+];
+
+const sizeOptions: Options[] = [
+  { id: 'PP', name: 'PP' },
+  { id: 'P', name: 'P' },
+  { id: 'M', name: 'M' },
+  { id: 'G', name: 'G' },
+  { id: 'GG', name: 'GG' },
+  { id: '33', name: '33' },
+  { id: '34', name: '34' },
+  { id: '35', name: '35' },
+  { id: '36', name: '36' },
+  { id: '37', name: '37' },
+  { id: '38', name: '38' },
+  { id: '39', name: '39' },
+  { id: '40', name: '40' },
+  { id: '41', name: '41' },
+  { id: '42', name: '42' },
+  { id: '43', name: '43' },
+  { id: '44', name: '44' },
+  { id: '45', name: '45' },
+  { id: '46', name: '46' },
+  { id: '47', name: '47' },
+  { id: '48', name: '48' },
+  { id: '49', name: '49' },
+  { id: '50', name: '50' },
+  { id: '51', name: '51' },
+  { id: '52', name: '52' },
+];
 interface AddProductProps {
-  handleSubmitProduct?: (data: ProductProps) => void;
+  handleEditedProduct?: (data: ProductProps) => void;
+  editProduct?: ProductProps;
 }
 
-const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
+const EditProduct: React.FC<AddProductProps> = ({
+  handleEditedProduct,
+  editProduct,
+}) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
 
@@ -45,18 +83,24 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
     {} as ProviderProps[]
   );
 
-  const [sizeSelect, setSizeSelect] = useState<string | undefined>(undefined);
-  const [genreSelect, setGenreSelect] = useState<string | undefined>(undefined);
-  const [typeSelect, setTypeSelect] = useState<string | undefined>(undefined);
+  const [sizeSelect, setSizeSelect] = useState<string | undefined>(
+    editProduct?.size
+  );
+  const [genreSelect, setGenreSelect] = useState<string | undefined>(
+    editProduct?.genre
+  );
+  const [typeSelect, setTypeSelect] = useState<string | undefined>(
+    editProduct?.purchase_type
+  );
   const [moldSelect, setMoldSelect] = useState<MoldProps | undefined>(
-    undefined
+    editProduct?.mold
   );
   const [categorySelect, setCategorySelect] = useState<
     CategoryProps | undefined
-  >(undefined);
+  >(editProduct?.category);
   const [providerSelect, setProviderSelect] = useState<
     ProviderProps | undefined
-  >(undefined);
+  >(editProduct?.provider);
 
   // const regExp = '/([0-9]{3}),([0-9]{2}$)/g';
 
@@ -135,8 +179,17 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
           .replace('R$', '')
           .replace(',', '.');
         const saleValue = parseFloat(saleValueString);
+        if (saleValue < purchaseValue) {
+          addToast({
+            title: 'Erro de valor',
+            description:
+              'O valor de compra não pode ser maior que o valor de venda',
+            type: 'error',
+          });
+          return;
+        }
         const product: ProductProps = {
-          id: Math.random().toString(),
+          id: editProduct?.id,
           name: data.name,
           color: data.color,
           brand: data.brand,
@@ -149,7 +202,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
           mold: moldSelect,
           provider: providerSelect,
         } as ProductProps;
-        if (handleSubmitProduct) handleSubmitProduct(product);
+        if (handleEditedProduct) handleEditedProduct(product);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -173,7 +226,8 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
       genreSelect,
       sizeSelect,
       typeSelect,
-      handleSubmitProduct,
+      handleEditedProduct,
+      editProduct?.id,
     ]
   );
 
@@ -246,18 +300,30 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
 
         <InputForm>
           <div>
-            <LabelInput name="name" label="Nome" />
+            <LabelInput
+              name="name"
+              label="Nome"
+              defaultValue={editProduct?.name}
+            />
 
-            <LabelInput name="color" label="Cor" />
+            <LabelInput
+              name="color"
+              label="Cor"
+              defaultValue={editProduct?.color}
+            />
 
-            <LabelInput name="brand" label="Marca" />
+            <LabelInput
+              name="brand"
+              label="Marca"
+              defaultValue={editProduct?.brand}
+            />
             <Select
               name="genre"
               id="genre"
               options={genreOptions}
               onChange={handleGenre}
               label="Gênero"
-              hasDefaultValue
+              defaultValue={editProduct?.genre}
             />
             <Select
               name="size"
@@ -265,7 +331,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
               options={sizeOptions}
               onChange={handleSize}
               label="Tamanho"
-              hasDefaultValue
+              defaultValue={editProduct?.size}
             />
           </div>
           <div>
@@ -275,7 +341,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
               options={typeOptions}
               onChange={handleType}
               label="Tipo de compra"
-              hasDefaultValue
+              defaultValue={editProduct?.purchase_type}
             />
             <Select
               name="mold"
@@ -283,7 +349,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
               options={molds}
               onChange={handleMold}
               label="Modelo"
-              hasDefaultValue
+              defaultValue={editProduct?.mold.name}
             />
 
             <Select
@@ -292,7 +358,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
               options={providers}
               onChange={handleProvider}
               label="Fornecedor"
-              hasDefaultValue
+              defaultValue={editProduct?.provider.name}
             />
             <Select
               name="category"
@@ -300,7 +366,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
               options={categories}
               onChange={handleCategory}
               label="Categoria"
-              hasDefaultValue
+              defaultValue={editProduct?.category.name}
             />
           </div>
         </InputForm>
@@ -311,20 +377,22 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
               name="purchase_value"
               id="purchase_value"
               label="Valor de compra"
+              defaultValue={editProduct?.purchase_value}
             />
 
             <InputFloat
               label="Valor de venda"
               name="sale_value"
               id="sale_value"
+              defaultValue={editProduct?.sale_value}
             />
           </div>
         </InputForm>
 
-        <Button type="submit">Adicionar</Button>
+        <Button type="submit">Salvar</Button>
       </Form>
     </Container>
   );
 };
 
-export default AddProduct;
+export default EditProduct;

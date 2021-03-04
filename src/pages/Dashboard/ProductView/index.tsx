@@ -17,23 +17,19 @@ import api from '../../../services/api';
 import LabelInput from '../../../components/LabelInput';
 import InputFloat from '../../../components/InputFloat';
 
-import {
-  Container,
-  InputForm,
-  ButtonDiv,
-  Status,
-  TooltipI,
-  TooltipO,
-} from './styles';
+import { Container, InputForm, ButtonDiv, Status, StatusDiv } from './styles';
 import Title from '../../../components/Title';
 import Button from '../../../components/Button';
-import Select, { Options } from '../../../components/Select';
+import Select from '../../../components/Select';
 
 import {
   CategoryProps,
   MoldProps,
   ProductProps,
   ProviderProps,
+  genreOptions,
+  sizeOptions,
+  typeOptions,
 } from '../../../utils/props';
 import { useToast } from '../../../hooks/ToastContext';
 import getValidationErrors from '../../../utils/getValidationErrors';
@@ -42,44 +38,6 @@ import Loading from '../../../components/Loading';
 interface ParamsProps {
   id: string;
 }
-
-const genreOptions = [
-  { id: 'F', name: 'Feminino' },
-  { id: 'M', name: 'Masculino' },
-];
-
-const typeOptions = [
-  { id: 'C', name: 'Consignado' },
-  { id: 'O', name: 'Próprio' },
-];
-
-const sizeOptions: Options[] = [
-  { id: 'PP', name: 'PP' },
-  { id: 'P', name: 'P' },
-  { id: 'M', name: 'M' },
-  { id: 'G', name: 'G' },
-  { id: 'GG', name: 'GG' },
-  { id: '33', name: '33' },
-  { id: '34', name: '34' },
-  { id: '35', name: '35' },
-  { id: '36', name: '36' },
-  { id: '37', name: '37' },
-  { id: '38', name: '38' },
-  { id: '39', name: '39' },
-  { id: '40', name: '40' },
-  { id: '41', name: '41' },
-  { id: '42', name: '42' },
-  { id: '43', name: '43' },
-  { id: '44', name: '44' },
-  { id: '45', name: '45' },
-  { id: '46', name: '46' },
-  { id: '47', name: '47' },
-  { id: '48', name: '48' },
-  { id: '49', name: '49' },
-  { id: '50', name: '50' },
-  { id: '51', name: '51' },
-  { id: '52', name: '52' },
-];
 
 const ProductView: React.FC = () => {
   const { id } = useParams<ParamsProps>();
@@ -103,6 +61,7 @@ const ProductView: React.FC = () => {
   const [moldSelect, setMoldSelect] = useState('');
   const [categorySelect, setCategorySelect] = useState('');
   const [providerSelect, setProviderSelect] = useState('');
+  const [productInStock, setProductInStock] = useState(false);
 
   // const regExp = '/([0-9]{3}),([0-9]{2}$)/g';
 
@@ -155,18 +114,6 @@ const ProductView: React.FC = () => {
           .replace('R$', '')
           .replace(',', '.');
         const saleValue = parseFloat(saleValueString);
-        if (saleValue < purchaseValue) {
-          addToast({
-            title: 'Erro de valor',
-            description:
-              'O valor de compra não pode ser maior que o valor de venda',
-            type: 'error',
-          });
-          return;
-        }
-        // if (!user) {
-        //   throw new Error(`Não é possível encontrar o usuário autenticado.`);
-        // }
 
         await api.put(`products/${product?.id}`, {
           name: data.name,
@@ -220,6 +167,8 @@ const ProductView: React.FC = () => {
   useEffect(() => {
     api.get(`products/${id}`).then((response) => {
       setProduct(response.data);
+      if (response.data.status === 'I') setProductInStock(true);
+      else setProductInStock(false);
     });
   }, [id]);
   useEffect(() => {
@@ -297,18 +246,17 @@ const ProductView: React.FC = () => {
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Informações</h1>
 
-          <Status>
+          <StatusDiv>
             <h2>Status:</h2>
-            {product.status === 'I' ? (
-              <TooltipI title="Em estoque">
+            <Status inStock={productInStock}>
+              {productInStock ? (
                 <BsCheckBox size={30} />
-              </TooltipI>
-            ) : (
-              <TooltipO title="Indisponível">
+              ) : (
                 <CgUnavailable size={30} />
-              </TooltipO>
-            )}
-          </Status>
+              )}
+              {productInStock ? <h3>Em estoque</h3> : <h3>Indisponível</h3>}
+            </Status>
+          </StatusDiv>
           <InputForm>
             <div>
               <LabelInput
@@ -402,12 +350,6 @@ const ProductView: React.FC = () => {
                 defaultValue={product.purchase_value}
                 readOnly={readOnly}
               />
-              {/* <InputFloat
-                label="Valor de compra"
-                name="purchaseValue"
-                defaultValue={product.purchase_value}
-                readOnly={readOnly}
-              /> */}
               <InputFloat
                 label="Valor de venda"
                 name="sale_value"
@@ -415,18 +357,6 @@ const ProductView: React.FC = () => {
                 defaultValue={product.sale_value}
                 readOnly={readOnly}
               />
-              {/* <LabelInput
-                name="purchaseValue"
-                label="Valor de compra"
-                defaultValue={handleFloatValue(product.purchase_value)}
-                readOnly={readOnly}
-              />
-              <LabelInput
-                name="saleValue"
-                label="Valor de Venda"
-                defaultValue={handleFloatValue(product.sale_value)}
-                readOnly={readOnly}
-              /> */}
             </div>
           </InputForm>
 

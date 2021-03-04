@@ -11,7 +11,7 @@ export const Container = styled.div`
   bottom: 0;
   flex-direction: column;
   overflow-y: scroll;
-  background-color: #fff;
+  /* background-color: #fff; */
 `;
 
 export const useStyles = makeStyles((theme: Theme) =>

@@ -21,6 +21,8 @@ import api from '../../services/api';
 
 import { Message } from './styles';
 
+import ButtonTooltip from '../ButtonTooltip';
+
 const alignTitle = 'left';
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -85,14 +87,16 @@ const CustomizedTables: React.FC = () => {
   const classes = useStyles();
 
   const [registers, setRegisters] = useState<RegisterProps[]>([]);
+  const [finishedData, setFinishedData] = useState(false);
 
   useEffect(() => {
     api.get('registers').then((response) => {
       setRegisters(response.data);
+      setFinishedData(true);
     });
-  }, []);
+  }, [setFinishedData]);
 
-  if (registers) {
+  if (finishedData) {
     return (
       <>
         {registers.length === 0 ? (
@@ -132,13 +136,19 @@ const CustomizedTables: React.FC = () => {
                     </StyledTableCell>
                     <StyledTableCell align="left">
                       <NavLink to={`/dashboard/registerView/${register.id}`}>
-                        <button
-                          id="view-button"
-                          type="button"
-                          className={classes.button}
+                        <ButtonTooltip
+                          title="Visualizar"
+                          positionX="-50px"
+                          positionY="-50px"
                         >
-                          <GrView size={20} />
-                        </button>
+                          <button
+                            id="view-button"
+                            type="button"
+                            className={classes.button}
+                          >
+                            <GrView size={20} />
+                          </button>
+                        </ButtonTooltip>
                       </NavLink>
                     </StyledTableCell>
                   </StyledTableRow>

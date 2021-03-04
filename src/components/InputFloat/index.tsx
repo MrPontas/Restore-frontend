@@ -72,6 +72,7 @@ const InputFloat: React.FC<InputFloatProps> = ({
           onBlur={handleInputBlur}
           ref={inputRef}
           onValueChange={onValueChange}
+          style={{ backgroundColor: 'transparent' }}
         />
         {error && (
           <Error title={error}>

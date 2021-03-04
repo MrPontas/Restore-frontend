@@ -19,6 +19,8 @@ import api from '../../services/api';
 import Loading from '../Loading';
 import { Message } from './styles';
 
+import ButtonTooltip from '../ButtonTooltip';
+
 const alignTitle = 'left';
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -73,14 +75,16 @@ const CustomizedTables: React.FC = () => {
   const classes = useStyles();
 
   const [products, setProducts] = useState<ProductProps[]>([]);
+  const [finishedData, setFinishedData] = useState(false);
 
   useEffect(() => {
     api.get('products').then((response) => {
       setProducts(response.data);
+      setFinishedData(true);
     });
-  }, []);
+  }, [setFinishedData]);
 
-  if (products) {
+  if (finishedData) {
     return (
       <>
         {products.length === 0 ? (
@@ -127,13 +131,19 @@ const CustomizedTables: React.FC = () => {
                     </StyledTableCell>
                     <StyledTableCell align="left">
                       <NavLink to={`/dashboard/productView/${product.id}`}>
-                        <button
-                          id="view-button"
-                          type="button"
-                          className={classes.button}
+                        <ButtonTooltip
+                          title="Visualizar"
+                          positionX="-50px"
+                          positionY="-50px"
                         >
-                          <GrView size={20} />
-                        </button>
+                          <button
+                            id="view-button"
+                            type="button"
+                            className={classes.button}
+                          >
+                            <GrView size={20} />
+                          </button>
+                        </ButtonTooltip>
                       </NavLink>
                     </StyledTableCell>
                   </StyledTableRow>

@@ -55,21 +55,6 @@ export const Content = styled.div<ContainerProps>`
     flex: 1;
     border: 0;
   }
-
-  svg {
-    margin-right: 16px;
-
-    ${(props) =>
-      props.isFocused &&
-      css`
-        color: #82af99;
-      `}
-    ${(props) =>
-      props.isFilled &&
-      css`
-        color: #82af99;
-      `}
-  }
 `;
 
 export const Error = styled(Tooltip)`

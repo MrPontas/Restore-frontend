@@ -1,18 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { format, parseISO } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { FormHandles } from '@unform/core';
-import { Form } from '@unform/web';
 import { Container, ButtonDiv, InfoDiv } from './styles';
 import api from '../../../services/api';
 
 import Title from '../../../components/Title';
-import Button from '../../../components/Button';
-import Select from '../../../components/Select';
 import Loading from '../../../components/Loading';
-import LabelInput from '../../../components/LabelInput';
 import Alert from '../../../components/Alert';
 
 import Table from '../../../components/RegisterProductsTable';
@@ -26,7 +20,6 @@ interface ParamsProps {
 
 const RegisterView: React.FC = () => {
   const { id } = useParams<ParamsProps>();
-  const formRef = useRef<FormHandles>(null);
 
   const [register, setRegister] = useState<RegisterProps | undefined>(
     undefined

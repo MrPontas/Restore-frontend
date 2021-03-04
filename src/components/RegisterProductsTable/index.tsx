@@ -17,6 +17,8 @@ import { GrView } from 'react-icons/gr';
 import { ProductProps } from '../../utils/props';
 import Loading from '../Loading';
 
+import ButtonTooltip from '../ButtonTooltip';
+
 const alignTitle = 'left';
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -74,46 +76,50 @@ interface TableProps {
 const CustomizedTables: React.FC<TableProps> = ({ products }) => {
   const classes = useStyles();
 
-  if (products) {
-    return (
-      <>
-        <TableContainer component={Paper}>
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align={alignTitle}>Nome</StyledTableCell>
-                <StyledTableCell align={alignTitle}>Modelo</StyledTableCell>
-                <StyledTableCell align={alignTitle}>Categoria</StyledTableCell>
-                <StyledTableCell align={alignTitle}>Gênero</StyledTableCell>
-                <StyledTableCell align={alignTitle}>Venda</StyledTableCell>
-                <StyledTableCell align={alignTitle}>Status</StyledTableCell>
-                <StyledTableCell align={alignTitle}> </StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {products.map((product) => (
-                <StyledTableRow key={product.id}>
-                  <StyledTableCell align="left">{product.name}</StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.mold.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.category.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.genre === 'F' ? 'Feminino' : 'Masculino'}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.sale_value.toLocaleString('pt-br', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    })}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.status === 'I' ? 'Em estoque' : 'Indisponível'}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    <NavLink to={`/dashboard/productView/${product.id}`}>
+  return (
+    <>
+      <TableContainer component={Paper}>
+        <Table aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align={alignTitle}>Nome</StyledTableCell>
+              <StyledTableCell align={alignTitle}>Modelo</StyledTableCell>
+              <StyledTableCell align={alignTitle}>Categoria</StyledTableCell>
+              <StyledTableCell align={alignTitle}>Gênero</StyledTableCell>
+              <StyledTableCell align={alignTitle}>Venda</StyledTableCell>
+              <StyledTableCell align={alignTitle}>Status</StyledTableCell>
+              <StyledTableCell align={alignTitle}> </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products.map((product) => (
+              <StyledTableRow key={product.id}>
+                <StyledTableCell align="left">{product.name}</StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.mold.name}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.category.name}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.genre === 'F' ? 'Feminino' : 'Masculino'}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.sale_value.toLocaleString('pt-br', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.status === 'I' ? 'Em estoque' : 'Indisponível'}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  <NavLink to={`/dashboard/productView/${product.id}`}>
+                    <ButtonTooltip
+                      title="Visualizar"
+                      positionX="-50px"
+                      positionY="-50px"
+                    >
                       <button
                         id="view-button"
                         type="button"
@@ -121,16 +127,15 @@ const CustomizedTables: React.FC<TableProps> = ({ products }) => {
                       >
                         <GrView size={20} />
                       </button>
-                    </NavLink>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </>
-    );
-  }
-  return <Loading />;
+                    </ButtonTooltip>
+                  </NavLink>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
 };
 export default CustomizedTables;

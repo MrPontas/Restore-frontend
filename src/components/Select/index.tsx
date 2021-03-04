@@ -28,7 +28,7 @@ const Select: React.FC<SelectProps> = ({
   label,
   readOnly,
   hasDefaultValue = false,
-  defaultValue = ' ',
+  defaultValue,
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);

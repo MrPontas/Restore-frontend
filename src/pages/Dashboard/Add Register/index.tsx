@@ -1,32 +1,63 @@
 import React, { useCallback, useState } from 'react';
 import { ImPlus } from 'react-icons/im';
-import * as Yup from 'yup';
 
-import Table from '../../../components/RegisterProductsTable';
+import { Redirect } from 'react-router-dom';
+import Table from '../../../components/AddProductTable';
 import Title from '../../../components/Title';
 import AddProduct from '../../../components/AddProduct';
 
-import Select, { Options } from '../../../components/Select';
+import Select from '../../../components/Select';
 import Button from '../../../components/Button';
-import Modal from '../../../components/Modal';
 
-import { Container, Content, ButtonDiv } from './styles';
-import { ProductProps, ProductPropsAdd } from '../../../utils/props';
-
-const registerOptions: Options[] = [
-  { id: 'I', name: 'Entrada' },
-  { id: 'O', name: 'Saída' },
-];
+import { Container, Content, ButtonDiv, ButtonSave } from './styles';
+import { ProductProps, registerOptions } from '../../../utils/props';
+import api from '../../../services/api';
+import { useToast } from '../../../hooks/ToastContext';
 
 const AddRegister: React.FC = () => {
   const [registerType, setRegisterType] = useState('I');
-  const [products, setProducts] = useState<ProductProps[] | undefined>();
+  const [products, setProducts] = useState<ProductProps[] | undefined>([]);
+  const [registerCreated, setRegisterCreated] = useState(false);
+
   const [readOnly, setReadOnly] = useState(false);
   const [addProduct, setAddProduct] = useState(false);
+  const { addToast } = useToast();
 
-  const handleSubmitProduct = useCallback((data: ProductPropsAdd): void => {
-    console.log(data);
-  }, []);
+  const handleSubmit = useCallback(() => {
+    try {
+      const productsSend = products?.map((product) => {
+        return {
+          ...product,
+          category: product.category.id,
+          provider: product.provider.id,
+          mold: product.mold.id,
+        };
+      });
+      api.post('registers', {
+        type: registerType,
+        products: productsSend,
+      });
+      addToast({
+        type: 'success',
+        title: 'Registro criado com sucesso!',
+      });
+      setTimeout(() => setRegisterCreated(true), 500);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }, [products, registerType, addToast]);
+
+  const handleSubmitProduct = useCallback(
+    (data: ProductProps): void => {
+      if (products) {
+        setProducts([...products, data]);
+      } else {
+        setProducts([data]);
+      }
+      setAddProduct(false);
+    },
+    [setAddProduct, products]
+  );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -46,28 +77,53 @@ const AddRegister: React.FC = () => {
     setReadOnly(true);
   }, [registerType]);
 
+  const handleProduct = useCallback(
+    (product) => {
+      if (products)
+        setProducts([
+          ...products.filter((obj) => obj.id !== product.id),
+          product,
+        ]);
+    },
+    [products]
+  );
+
   return (
     <Container>
+      {registerCreated && <Redirect to="/dashboard/registers" />}
       <Title>
         <h1>Adicionar registro</h1>
       </Title>
       <Content>
-        <h2>Tipo:</h2>
-        <Select
-          label=""
-          options={registerOptions}
-          readOnly={readOnly}
-          onChange={handleChange}
-        />
+        <h2>
+          Tipo:
+          <Select
+            label=""
+            options={registerOptions}
+            readOnly={readOnly}
+            onChange={handleChange}
+          />
+        </h2>
+
+        {!addProduct && (
+          <ButtonDiv>
+            <Button onClick={handleAddProduct}>
+              <ImPlus />
+              Adicionar produto
+            </Button>
+          </ButtonDiv>
+        )}
       </Content>
-      {products && <Table products={products} />}
-      <ButtonDiv>
-        <Button onClick={handleAddProduct}>
-          <ImPlus />
-          Adicionar produto
-        </Button>
-      </ButtonDiv>
+      {products && <Table handleProduct={handleProduct} products={products} />}
+
       {addProduct && <AddProduct handleSubmitProduct={handleSubmitProduct} />}
+      {products && products.length > 0 && !addProduct ? (
+        <ButtonSave>
+          <Button onClick={handleSubmit}>Salvar registro</Button>
+        </ButtonSave>
+      ) : (
+        ''
+      )}
     </Container>
   );
 };

@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import Tooltip from '../../../components/Tooltip';
+import styled, { css } from 'styled-components';
+
+interface StatusProps {
+  inStock: boolean;
+}
 
 export const Container = styled.div`
   display: flex;
@@ -63,36 +66,31 @@ export const ButtonDiv = styled.div`
   }
 `;
 
-export const Status = styled.div`
+export const StatusDiv = styled.div`
   display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 100%;
   margin-top: 30px;
-
-  span {
-    margin-top: 10px;
-  }
 `;
 
-export const TooltipI = styled(Tooltip)`
-  color: #82af99;
+export const Status = styled.div<StatusProps>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
 
-  height: 15px;
-  width: 15px;
-  margin-left: 10px;
   svg {
-    margin: 0;
+    margin-left: 10px;
+    color: #c53030;
+    ${(props) =>
+      props.inStock &&
+      css`
+        color: #82af99;
+      `}
   }
-  span {
-    background-color: #82af99;
-  }
-`;
-
-export const TooltipO = styled(Tooltip)`
-  color: #c53030;
-  height: 15px;
-  width: 15px;
-  margin-left: 10px;
-  svg {
-    margin: 0;
+  h3 {
+    margin-left: 5px;
+    font-weight: 100;
   }
 `;
