@@ -12,6 +12,33 @@ export const Container = styled.div`
   align-items: center;
 `;
 
+export const Title = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  /* background-color: #000; */
+  border-bottom: 1px solid #312e38;
+
+  h1 {
+    color: #000;
+    padding: 20px;
+    margin-right: calc(100% - 600px);
+  }
+
+  form {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 300px;
+
+    button {
+      border: transparent;
+      background: transparent;
+    }
+  }
+`;
+
 export const ProductsHeader = styled.div`
   width: 100%;
   max-height: 50px;

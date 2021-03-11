@@ -15,6 +15,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { GrView } from 'react-icons/gr';
 import { ProductProps } from '../../utils/props';
+import sortByName from '../../utils/sortObjectArray';
+
 import Loading from '../Loading';
 
 import ButtonTooltip from '../ButtonTooltip';
@@ -75,6 +77,8 @@ interface TableProps {
 
 const CustomizedTables: React.FC<TableProps> = ({ products }) => {
   const classes = useStyles();
+
+  sortByName(products);
 
   return (
     <>

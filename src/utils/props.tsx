@@ -40,6 +40,16 @@ export interface ProductProps {
   user: UserProps;
 }
 
+export interface TableProducts {
+  id: string;
+  name: string;
+  mold: MoldProps;
+  category: string;
+  genre: string;
+  sale_value: string;
+  status: string;
+}
+
 export interface RegisterProps {
   id: string;
   type: string;

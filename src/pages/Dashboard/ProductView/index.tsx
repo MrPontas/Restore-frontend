@@ -83,17 +83,6 @@ const ProductView: React.FC = () => {
   const handleSubmit = useCallback(
     async (data) => {
       formRef.current?.setErrors({});
-
-      // let userObject: UserProps = { id: '', name: '', administrator: false };
-      // const user = localStorage.getItem('@ReStore:user');
-      // if (user) userObject = JSON.parse(user);
-      // if (!moldSelect && product) setMoldSelect(product.mold.id);
-      // if (!typeSelect && product) setMoldSelect(product.purchase_type);
-      // if (!categorySelect && product) setCategorySelect(product.category.id);
-      // if (!providerSelect && product) setProviderSelect(product.provider.id);
-      // if (!genreSelect && product) setGenreSelect(product.genre);
-      // if (!sizeSelect && product) setSizeSelect(product.size);
-
       try {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),

@@ -91,6 +91,7 @@ export const Status = styled.div<StatusProps>`
   }
   h3 {
     margin-left: 5px;
+    color: #494949;
     font-weight: 100;
   }
 `;

@@ -14,7 +14,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { GrView } from 'react-icons/gr';
+import { BsArrowUp } from 'react-icons/bs';
 import { ProductProps } from '../../utils/props';
+import sortArray from '../../utils/sortObjectArray';
 import api from '../../services/api';
 import Loading from '../Loading';
 import { Message } from './styles';
@@ -79,6 +81,7 @@ const CustomizedTables: React.FC = () => {
 
   useEffect(() => {
     api.get('products').then((response) => {
+      sortArray(response.data);
       setProducts(response.data);
       setFinishedData(true);
     });
@@ -94,8 +97,8 @@ const CustomizedTables: React.FC = () => {
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align={alignTitle}>Nome</StyledTableCell>
-                  <StyledTableCell align={alignTitle}>Modelo</StyledTableCell>
+                  <StyledTableCell align={alignTitle}>Nome </StyledTableCell>
+                  <StyledTableCell align={alignTitle}>Modelo </StyledTableCell>
                   <StyledTableCell align={alignTitle}>
                     Categoria
                   </StyledTableCell>

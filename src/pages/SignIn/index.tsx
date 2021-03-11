@@ -1,5 +1,4 @@
 import React, { useCallback, useRef } from 'react';
-import { GiClothes } from 'react-icons/gi';
 import { FiLock, FiUser } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';

@@ -104,3 +104,15 @@ export const ButtonExclude = styled(Button)`
     background: ${shade(0.2, '#c74444')};
   }
 `;
+
+export const SearchDiv = styled.div`
+  form {
+    margin: 0;
+  }
+  display: flex;
+  margin: 0 0 0 65px;
+  padding: 0 0 0 20px;
+  /* margin-right: 150px; */
+  max-width: 400px;
+  max-height: 80px;
+`;

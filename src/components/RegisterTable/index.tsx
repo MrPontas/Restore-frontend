@@ -19,6 +19,8 @@ import { RegisterProps } from '../../utils/props';
 import getHoursBr from '../../utils/getDateBr';
 import api from '../../services/api';
 
+import Loading from '../Loading';
+
 import { Message } from './styles';
 
 import ButtonTooltip from '../ButtonTooltip';
@@ -160,12 +162,6 @@ const CustomizedTables: React.FC = () => {
       </>
     );
   }
-  return (
-    <TableContainer className={classes.load}>
-      <div>
-        <CircularProgress />
-      </div>
-    </TableContainer>
-  );
+  return <Loading />;
 };
 export default CustomizedTables;

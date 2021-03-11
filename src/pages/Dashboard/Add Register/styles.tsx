@@ -15,6 +15,7 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   color: black;
@@ -32,7 +33,7 @@ export const Content = styled.div`
 
 export const ButtonDiv = styled.div`
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
 
   button {
     display: flex;
