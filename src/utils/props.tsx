@@ -121,3 +121,8 @@ export const registerOptions: Options[] = [
   { id: 'I', name: 'Entrada' },
   { id: 'O', name: 'Saída' },
 ];
+export const searchRegisterOptions: Options[] = [
+  { id: 'A', name: 'Todos' },
+  { id: 'I', name: 'Entrada' },
+  { id: 'O', name: 'Saída' },
+];

@@ -14,7 +14,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { GrView } from 'react-icons/gr';
-import { CircularProgress } from '@material-ui/core';
 import { RegisterProps } from '../../utils/props';
 import getHoursBr from '../../utils/getDateBr';
 import api from '../../services/api';
@@ -85,20 +84,18 @@ const StyledTableRow = withStyles((theme: Theme) =>
   })
 )(TableRow);
 
-const CustomizedTables: React.FC = () => {
+interface RegisterTableProps {
+  registers: RegisterProps[] | undefined;
+  finishedData: boolean;
+}
+
+const CustomizedTables: React.FC<RegisterTableProps> = ({
+  registers,
+  finishedData,
+}) => {
   const classes = useStyles();
 
-  const [registers, setRegisters] = useState<RegisterProps[]>([]);
-  const [finishedData, setFinishedData] = useState(false);
-
-  useEffect(() => {
-    api.get('registers').then((response) => {
-      setRegisters(response.data);
-      setFinishedData(true);
-    });
-  }, [setFinishedData]);
-
-  if (finishedData) {
+  if (finishedData && registers) {
     return (
       <>
         {registers.length === 0 ? (

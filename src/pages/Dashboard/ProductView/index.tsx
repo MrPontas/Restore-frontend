@@ -63,8 +63,6 @@ const ProductView: React.FC = () => {
   const [providerSelect, setProviderSelect] = useState('');
   const [productInStock, setProductInStock] = useState(false);
 
-  // const regExp = '/([0-9]{3}),([0-9]{2}$)/g';
-
   const handleEdition = (): void => {
     if (edition) return;
     setEdition(true);
@@ -78,6 +76,14 @@ const ProductView: React.FC = () => {
   const handleCatchEdition = useCallback(() => {
     setEdition(true);
     setReadOnly(false);
+  }, []);
+
+  const handleDefaultValue = useCallback((value: number): string => {
+    if (value % 1 !== 0) {
+      return String(value);
+    }
+    const stringValue = `${String(value)},00`;
+    return stringValue;
   }, []);
 
   const handleSubmit = useCallback(
@@ -336,16 +342,19 @@ const ProductView: React.FC = () => {
                 name="purchase_value"
                 id="purchase_value"
                 label="Valor de compra"
-                defaultValue={product.purchase_value}
+                defaultValue={handleDefaultValue(product.purchase_value)}
                 readOnly={readOnly}
               />
               <InputFloat
                 label="Valor de venda"
                 name="sale_value"
                 id="sale_value"
-                defaultValue={product.sale_value}
+                defaultValue={handleDefaultValue(product.sale_value)}
                 readOnly={readOnly}
               />
+            </div>
+            <div>
+              <LabelInput id="obs" name="obs" label="Observações" type="text" />
             </div>
           </InputForm>
 

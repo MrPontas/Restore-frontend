@@ -2,10 +2,6 @@ import styled from 'styled-components';
 import signInBackground from '../../assets/background.jpeg';
 
 export const Background = styled.div`
-  /* flex: 1;
-  display: flex;
-  background: url(${signInBackground}) no-repeat center;
-  background-size: cover; */
   background-color: #efeeee;
 `;
 

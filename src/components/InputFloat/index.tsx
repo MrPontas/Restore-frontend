@@ -15,7 +15,7 @@ import { Container, Content, Error } from './styles';
 
 interface InputFloatProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  defaultValue?: number;
+  defaultValue?: number | string;
   readOnly?: boolean;
   icon?: React.ComponentType<IconBaseProps>;
   label: string;

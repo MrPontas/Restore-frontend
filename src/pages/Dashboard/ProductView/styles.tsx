@@ -16,6 +16,7 @@ export const Container = styled.div`
   overflow-y: scroll;
   background-color: #fff;
   color: #000;
+
   form {
     padding-bottom: 40px;
     margin-left: 65px;
