@@ -16,6 +16,7 @@ import { BsCheckBox } from 'react-icons/bs';
 import api from '../../../services/api';
 import LabelInput from '../../../components/LabelInput';
 import InputFloat from '../../../components/InputFloat';
+import Textarea from '../../../components/Textarea';
 
 import { Container, InputForm, ButtonDiv, Status, StatusDiv } from './styles';
 import Title from '../../../components/Title';
@@ -114,6 +115,7 @@ const ProductView: React.FC = () => {
           name: data.name,
           color: data.color,
           brand: data.brand,
+          obs: data.obs,
           purchase_value: purchaseValue,
           sale_value: saleValue,
           genre: genreSelect,
@@ -353,10 +355,15 @@ const ProductView: React.FC = () => {
                 readOnly={readOnly}
               />
             </div>
-            <div>
-              <LabelInput id="obs" name="obs" label="Observações" type="text" />
-            </div>
           </InputForm>
+          <h1>Observações</h1>
+
+          <Textarea
+            name="obs"
+            id="obsContainer"
+            readOnly={readOnly}
+            defaultValue={product.obs}
+          />
 
           {edition && <Button type="submit">Salvar</Button>}
         </Form>

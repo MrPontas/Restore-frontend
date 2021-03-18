@@ -19,8 +19,8 @@ const Dashboard: React.FC = () => {
   const { signOut } = useAuth();
 
   useEffect(() => {
-    api.get('sessions').catch((error) => {
-      if (error.status === 401) {
+    api.get('sessions').then((response) => {
+      if (response.status === 401) {
         signOut();
       }
     });

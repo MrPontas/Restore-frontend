@@ -1,6 +1,5 @@
 import { shade } from 'polished';
 import styled from 'styled-components';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Button from '../Button';
 
 export const ButtonExclude = styled(Button)`
@@ -18,15 +17,3 @@ export const ButtonExclude = styled(Button)`
     background: ${shade(0.2, '#c74444')};
   }
 `;
-
-export const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    colorPrimary: { color: '#c74444' },
-    colorSecondary: { color: '#9c9b9b' },
-    icon: {
-      color: '#c74444',
-      alignSelf: 'center',
-      marginTop: '20px',
-    },
-  })
-);

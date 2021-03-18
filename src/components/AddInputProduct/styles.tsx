@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { shade } from 'polished';
 import Tooltip from '../Tooltip';
 
 export const Container = styled.div`
@@ -19,8 +20,14 @@ export const Container = styled.div`
 
     button {
       color: white;
-      max-width: 100px;
-      margin-left: 15px;
+      max-width: 200px;
+      margin-left: 20px;
+      & + button {
+        background-color: #b6b6b6;
+        &:hover {
+          background: ${shade(0.2, '#b6b6b6')};
+        }
+      }
     }
   }
 `;

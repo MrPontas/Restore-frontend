@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { BsFillExclamationTriangleFill } from 'react-icons/bs';
+import { SiIfixit } from 'react-icons/si';
 
 import { useParams } from 'react-router-dom';
 
@@ -12,6 +14,7 @@ import api from '../../../services/api';
 import Title from '../../../components/Title';
 import Loading from '../../../components/Loading';
 import Alert from '../../../components/Alert';
+import { useToast } from '../../../hooks/ToastContext';
 
 import Table from '../../../components/RegisterProductsTable';
 
@@ -28,6 +31,7 @@ interface SearchProps {
 }
 
 const RegisterView: React.FC = () => {
+  const { addToast } = useToast();
   const { id } = useParams<ParamsProps>();
 
   const formRef = useRef<FormHandles>(null);
@@ -52,8 +56,20 @@ const RegisterView: React.FC = () => {
         );
       }
     },
-    [register]
+    [register, productsBuffer]
   );
+
+  const handleConfirm = useCallback(() => {
+    try {
+      api.delete(`registers/${register?.id}`);
+      addToast({
+        type: 'success',
+        title: 'Registro excluído com sucesso.',
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }, [register, addToast]);
 
   useEffect(() => {
     api.get(`registers/${id}`).then((response) => {
@@ -79,8 +95,15 @@ const RegisterView: React.FC = () => {
                   ? 'Os produtos serão excluídos permanentemente.'
                   : 'Os produtos retornarão para o estoque e demais informações serão perdidas.'
               }
-              registerId={register.id}
-            />
+              icon={BsFillExclamationTriangleFill}
+              open
+              button
+              handleConfirm={handleConfirm}
+              colorIcon="#c74444"
+              iconButton={SiIfixit}
+            >
+              Excluir
+            </Alert>
           </ButtonDiv>
           <InfoDiv>
             <h1>Informações</h1>

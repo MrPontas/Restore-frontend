@@ -1,27 +1,46 @@
 import React, { useCallback, useState } from 'react';
 import { ImPlus } from 'react-icons/im';
+import { AiFillCheckCircle } from 'react-icons/ai';
+import { MdCancel } from 'react-icons/md';
 
 import { Redirect } from 'react-router-dom';
 import Table from '../../../components/AddProductTable';
 import Title from '../../../components/Title';
-import AddProduct from '../../../components/AddProduct';
+import AddInputProduct from '../../../components/AddInputProduct';
+import AddOutputProduct from '../../../components/AddOutputProduct';
 
 import Select from '../../../components/Select';
 import Button from '../../../components/Button';
+import Alert from '../../../components/Alert';
 
-import { Container, Content, ButtonDiv, ButtonSave } from './styles';
+import {
+  Container,
+  Content,
+  ButtonDiv,
+  ButtonSave,
+  ButtonOutDiv,
+} from './styles';
 import { ProductProps, registerOptions } from '../../../utils/props';
 import api from '../../../services/api';
 import { useToast } from '../../../hooks/ToastContext';
 
 const AddRegister: React.FC = () => {
   const [registerType, setRegisterType] = useState('I');
-  const [products, setProducts] = useState<ProductProps[] | undefined>([]);
+  const [products, setProducts] = useState<ProductProps[] | undefined>(
+    undefined
+  );
   const [registerCreated, setRegisterCreated] = useState(false);
 
   const [readOnly, setReadOnly] = useState(false);
   const [addProduct, setAddProduct] = useState(false);
+  const [toRegister, setToRegister] = useState(false);
+  const [alertView, setAlertView] = useState(false);
+
   const { addToast } = useToast();
+
+  const handleOpenAlert = useCallback(() => {
+    setAlertView(true);
+  }, []);
 
   const handleSubmit = useCallback(() => {
     try {
@@ -41,13 +60,13 @@ const AddRegister: React.FC = () => {
         type: 'success',
         title: 'Registro criado com sucesso!',
       });
-      setTimeout(() => setRegisterCreated(true), 500);
+      setTimeout(() => setRegisterCreated(true), 1500);
     } catch (err) {
       throw new Error(err);
     }
   }, [products, registerType, addToast]);
 
-  const handleSubmitProduct = useCallback(
+  const handleSubmitInputProduct = useCallback(
     (data: ProductProps): void => {
       if (products) {
         setProducts([...products, data]);
@@ -57,6 +76,13 @@ const AddRegister: React.FC = () => {
       setAddProduct(false);
     },
     [setAddProduct, products]
+  );
+
+  const handleSubmitOutputProduct = useCallback(
+    (data: ProductProps[]): void => {
+      setProducts(data);
+    },
+    []
   );
 
   const handleChange = useCallback(
@@ -71,7 +97,7 @@ const AddRegister: React.FC = () => {
   );
 
   const handleAddProduct = useCallback(() => {
-    if (registerType === 'I') {
+    if (registerType === 'I' || registerType === 'O') {
       setAddProduct(true);
     }
     setReadOnly(true);
@@ -88,6 +114,10 @@ const AddRegister: React.FC = () => {
     [products]
   );
 
+  const handleCancelRegister = useCallback(() => {
+    setToRegister(true);
+  }, []);
+  if (toRegister) return <Redirect to="registers" />;
   return (
     <Container>
       {registerCreated && <Redirect to="/dashboard/registers" />}
@@ -114,9 +144,37 @@ const AddRegister: React.FC = () => {
           </ButtonDiv>
         )}
       </Content>
+      {alertView && (
+        <Alert
+          title="Tem certeza?"
+          description="Os dados não serão salvos!"
+          openAlert
+          open
+          handleConfirm={handleCancelRegister}
+          button={false}
+        />
+      )}
+
       {products && <Table handleProduct={handleProduct} products={products} />}
 
-      {addProduct && <AddProduct handleSubmitProduct={handleSubmitProduct} />}
+      {addProduct && registerType === 'I' && (
+        <AddInputProduct handleSubmitProduct={handleSubmitInputProduct} />
+      )}
+      {addProduct && registerType === 'O' && (
+        <AddOutputProduct handleSubmitProduct={handleSubmitOutputProduct} />
+      )}
+      {products && registerType === 'O' && (
+        <ButtonOutDiv>
+          <Button id="cancel" onClick={handleOpenAlert}>
+            <MdCancel size={20} /> Cancelar
+          </Button>
+
+          <Button onClick={handleSubmit}>
+            <AiFillCheckCircle size={20} /> Salvar registro
+          </Button>
+        </ButtonOutDiv>
+      )}
+
       {products && products.length > 0 && !addProduct ? (
         <ButtonSave>
           <Button onClick={handleSubmit}>Salvar registro</Button>

@@ -9,6 +9,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
+import { Redirect } from 'react-router-dom';
 import api from '../../services/api';
 import LabelInput from '../LabelInput';
 import InputFloat from '../InputFloat';
@@ -16,6 +17,7 @@ import InputFloat from '../InputFloat';
 import { Container, InputForm } from './styles';
 import Button from '../Button';
 import Select from '../Select';
+import Textarea from '../Textarea';
 
 import {
   CategoryProps,
@@ -29,11 +31,13 @@ import {
 import { useToast } from '../../hooks/ToastContext';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-interface AddProductProps {
+interface AddInputProductProps {
   handleSubmitProduct?: (data: ProductProps) => void;
 }
 
-const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
+const AddProduct: React.FC<AddInputProductProps> = ({
+  handleSubmitProduct,
+}) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
 
@@ -57,8 +61,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
   const [providerSelect, setProviderSelect] = useState<
     ProviderProps | undefined
   >(undefined);
-
-  // const regExp = '/([0-9]{3}),([0-9]{2}$)/g';
+  const [redirect, setRedirect] = useState(false);
 
   const handleSubmit = useCallback(
     async (data) => {
@@ -193,6 +196,10 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
     });
   }, []);
 
+  const handleRedirect = useCallback(() => {
+    setRedirect(true);
+  }, []);
+
   const handleType = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { selectedIndex } = e.target.options;
     const eventType = e.target.options[selectedIndex].getAttribute('id');
@@ -239,6 +246,7 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
     }
   }, []);
 
+  if (redirect) return <Redirect to="registers" />;
   return (
     <Container>
       <Form ref={formRef} onSubmit={handleSubmit}>
@@ -320,8 +328,13 @@ const AddProduct: React.FC<AddProductProps> = ({ handleSubmitProduct }) => {
             />
           </div>
         </InputForm>
+        <h1>Observações</h1>
+        <Textarea name="obs" />
 
         <Button type="submit">Adicionar</Button>
+        <Button type="button" onClick={handleRedirect}>
+          Cancelar
+        </Button>
       </Form>
     </Container>
   );

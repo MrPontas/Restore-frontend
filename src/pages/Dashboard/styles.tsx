@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import signInBackground from '../../assets/background.jpeg';
 
 export const Background = styled.div`
   background-color: #efeeee;
