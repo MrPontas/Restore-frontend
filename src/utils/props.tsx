@@ -14,7 +14,8 @@ export interface UserProps {
   id: string;
   name: string;
   administrator: boolean;
-  login?: string;
+  login: string;
+  email?: string;
   password?: string;
 }
 export interface ProviderProps {

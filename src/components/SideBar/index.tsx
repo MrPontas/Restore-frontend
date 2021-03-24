@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { VscSymbolKeyword } from 'react-icons/vsc';
 import { RiShirtLine } from 'react-icons/ri';
@@ -8,6 +8,8 @@ import { IoIosPaper } from 'react-icons/io';
 
 import { Container, StyledNavLink } from './styles';
 import logoHeader from '../../assets/logo.png';
+
+import { useAuth } from '../../hooks/AuthContext';
 
 const activeStyle: React.CSSProperties = {
   backgroundColor: '#82af99',
@@ -27,6 +29,8 @@ const style: React.CSSProperties = {
 };
 
 const SideBar: React.FC = () => {
+  const { user } = useAuth();
+
   return (
     <Container>
       <header>
@@ -67,14 +71,16 @@ const SideBar: React.FC = () => {
         <IoIosPaper size={30} />
         Relatórios
       </StyledNavLink>
-      <StyledNavLink
-        to="/dashboard/users"
-        activeStyle={activeStyle}
-        style={style}
-      >
-        <FiUsers size={30} />
-        Usuários
-      </StyledNavLink>
+      {user.administrator && (
+        <StyledNavLink
+          to="/dashboard/users"
+          activeStyle={activeStyle}
+          style={style}
+        >
+          <FiUsers size={30} />
+          Usuários
+        </StyledNavLink>
+      )}
       <div />
     </Container>
   );

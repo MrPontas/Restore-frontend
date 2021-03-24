@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { FiLogOut } from 'react-icons/fi';
 
@@ -13,23 +13,16 @@ import { UserProps } from '../../utils/props';
 import Registers from './Registers';
 import RegisterView from './RegisterView';
 import AddRegister from './Add Register';
-import api from '../../services/api';
+import Users from './Users';
 
 const Dashboard: React.FC = () => {
-  const { signOut } = useAuth();
-
-  useEffect(() => {
-    api.get('sessions').then((response) => {
-      if (response.status === 401) {
-        signOut();
-      }
-    });
-  }, [signOut]);
+  const { signOut, ensureAuthenticated } = useAuth();
   const user = localStorage.getItem('@ReStore:user');
 
   if (!user) {
     throw new Error(`Can't find authenticated user.`);
   }
+  ensureAuthenticated();
   const userObject: UserProps = JSON.parse(user);
 
   const name = userObject.name.split(' ');
@@ -73,6 +66,7 @@ const Dashboard: React.FC = () => {
           component={AddRegister}
           isPrivate
         />
+        <Route path="/dashboard/users" component={Users} isPrivate isStrict />
       </Switch>
 
       <Background />

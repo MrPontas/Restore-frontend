@@ -9,6 +9,7 @@ import { useAuth } from '../hooks/AuthContext';
 
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
+  isStrict?: boolean;
   component: React.ComponentType;
 }
 

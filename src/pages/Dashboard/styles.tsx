@@ -14,42 +14,25 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   position: absolute;
-  display: block;
+  display: flex;
 
-  /* max-width: calc(100% - 188px); */
   width: 100%;
   max-height: 70px;
   height: 100%;
   border-bottom: 2px solid white;
 
-  /* margin-left: 188px; */
-
   background-color: #82af99;
 
   div {
-    position: absolute;
-    place-content: center;
-    right: 0;
-    top: 0;
-    margin-right: 20px;
-    margin-top: 15px;
-    display: column;
+    margin: 20px 20px 0px auto;
     p {
       font-size: 18px;
       font-weight: 600;
-      /* text-decoration: wavy; */
     }
     button {
-      display: flex;
-      position: absolute;
-      right: 0;
-      margin-left: 20px;
-      background-color: transparent;
-      border-color: transparent;
-      /* padding-bottom: 20px; */
-      color: #fff;
-      text-decoration: underline;
-
+      background: transparent;
+      border: none;
+      color: white;
       svg {
         text-decoration: none;
 

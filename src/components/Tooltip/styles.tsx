@@ -13,6 +13,7 @@ export const Container = styled.div`
     transition: opacity 0.4s;
     position: absolute;
     bottom: -100%;
+    min-width: 100px;
     left: 270%;
     color: #ffffff;
     visibility: hidden;

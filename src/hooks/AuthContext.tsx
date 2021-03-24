@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 import api from '../services/api';
+import { UserProps } from '../utils/props';
 
 interface SignInCredentials {
   login: string;
@@ -8,13 +9,14 @@ interface SignInCredentials {
 
 interface AuthState {
   token: string;
-  user: Record<string, unknown>;
+  user: UserProps;
 }
 
 interface AuthContextData {
-  user: Record<string, unknown>;
+  user: UserProps;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  ensureAuthenticated(): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -53,8 +55,16 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
+  const ensureAuthenticated = useCallback(async () => {
+    await api.get('sessions').catch(() => {
+      signOut();
+    });
+  }, [signOut]);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, ensureAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );
