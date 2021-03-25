@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FaRegEdit } from 'react-icons/fa';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import { FaRegEdit, FaTrashAlt } from 'react-icons/fa';
 
 import {
   withStyles,
@@ -16,10 +16,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import Loading from '../Loading';
-import ButtonTooltip from '../ButtonTooltip';
 
 import { UserProps } from '../../utils/props';
 import api from '../../services/api';
+
+import ButtonTooltip from '../ButtonTooltip';
 
 const alignTitle = 'left';
 
@@ -69,21 +70,35 @@ const useStyles = makeStyles({
   button: {
     MaxHeight: '100%',
     MaxWidth: '100%',
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
     borderRadius: '5px',
     padding: '2px',
     paddingLeft: '6px',
     paddingBottom: '0px',
     marginRight: '3px',
   },
+  buttonDlt: {
+    MaxHeight: '100%',
+    MaxWidth: '100%',
+    color: '#fff',
+    backgroundColor: '#c74444',
+    borderRadius: '5px',
+    padding: '2px 4px 0 3px',
+  },
+  buttonCell: {
+    marginRight: '30px',
+    maxWidth: '10px',
+  },
 });
 
 interface UserTableProps {
   handleEdit: (id: string) => void;
+  handleExclude: (id: string) => void;
 }
 
-const UserTable: React.FC<UserTableProps> = ({ handleEdit }) => {
+const UserTable: React.FC<UserTableProps> = ({ handleEdit, handleExclude }) => {
   const [finishedData, setFinishedData] = useState(false);
+
   const [users, setUsers] = useState({} as UserProps[]);
   const classes = useStyles();
   useEffect(() => {
@@ -93,61 +108,80 @@ const UserTable: React.FC<UserTableProps> = ({ handleEdit }) => {
         setFinishedData(true);
       });
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }, []);
 
   if (finishedData) {
     return (
-      <>
-        <TableContainer component={Paper} className={classes.table}>
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align={alignTitle}>Nome </StyledTableCell>
-                <StyledTableCell align={alignTitle}>Login </StyledTableCell>
-                <StyledTableCell align={alignTitle}>
-                  Tipo de usuário
-                </StyledTableCell>
-                <StyledTableCell align={alignTitle}> </StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users.map((user) => {
-                return (
-                  <StyledTableRow>
-                    <StyledTableCell align="left">{user.name}</StyledTableCell>
-                    <StyledTableCell align="left">{user.login}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      {user.administrator ? 'Administrador' : 'Comum'}
-                    </StyledTableCell>
-                    <StyledTableCell>
+      <TableContainer component={Paper} className={classes.table}>
+        <Table aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align={alignTitle}>Nome </StyledTableCell>
+              <StyledTableCell align={alignTitle}>Login </StyledTableCell>
+              <StyledTableCell align={alignTitle}>
+                Tipo de usuário
+              </StyledTableCell>
+              <StyledTableCell align={alignTitle}> </StyledTableCell>
+              <StyledTableCell align={alignTitle}> </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => {
+              return (
+                <StyledTableRow>
+                  <StyledTableCell align="left">{user.name}</StyledTableCell>
+                  <StyledTableCell align="left">{user.login}</StyledTableCell>
+                  <StyledTableCell align="left">
+                    {user.administrator ? 'Administrador' : 'Comum'}
+                  </StyledTableCell>
+                  <StyledTableCell className={classes.buttonCell}>
+                    {user.login === 'admin' ? (
+                      ' '
+                    ) : (
                       <ButtonTooltip
                         title="Editar"
-                        positionX="-100px"
-                        positionY="-4px"
+                        positionX="-10px"
+                        positionY="-80px"
                       >
-                        {user.login === 'admin' ? (
-                          ' '
-                        ) : (
-                          <button
-                            id="view-button"
-                            type="button"
-                            onClick={() => handleEdit(user.id)}
-                            className={classes.button}
-                          >
-                            <FaRegEdit size={20} />
-                          </button>
-                        )}
+                        <button
+                          id="edit-button"
+                          type="button"
+                          onClick={() => handleEdit(user.id)}
+                          className={classes.button}
+                        >
+                          <FaRegEdit size={20} />
+                        </button>
                       </ButtonTooltip>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </>
+                    )}
+                  </StyledTableCell>
+                  <StyledTableCell>
+                    {user.login === 'admin' ? (
+                      ' '
+                    ) : (
+                      <ButtonTooltip
+                        title="Excluir"
+                        positionX="-50px"
+                        positionY="-50px"
+                      >
+                        <button
+                          id="exclude-button"
+                          type="button"
+                          onClick={() => handleExclude(user.id)}
+                          className={classes.buttonDlt}
+                        >
+                          <FaTrashAlt size={20} />
+                        </button>
+                      </ButtonTooltip>
+                    )}
+                  </StyledTableCell>
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   }
   return <Loading />;

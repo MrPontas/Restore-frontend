@@ -194,11 +194,11 @@ const Alert: React.FC<AlertProps> = ({
               </div>
             </div>
             <div className={classes.rightDiv}>
-              <LabelInput label="Senha" name="new-password" type="password" />
+              <LabelInput label="Senha" name="password" type="password" />
               <LabelInput
                 label="Repetir senha"
                 name="repeatPassword"
-                type="new-password"
+                type="password"
               />
               {checked && <LabelInput label="E-mail" name="email" />}
             </div>

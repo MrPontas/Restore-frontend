@@ -9,11 +9,16 @@ import EditUser from '../../../components/EditUser';
 import { Title, Container, ButtonDiv, StyledButton } from './styles';
 import api from '../../../services/api';
 import { UserProps } from '../../../utils/props';
+import Alert from '../../../components/GenericAlert';
+import { useToast } from '../../../hooks/ToastContext';
 
 const Users: React.FC = () => {
   const [addUserAlert, setAddUserAlert] = useState(false);
   const [idEdit, setIdEdit] = useState<string | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [excludeUser, setExcludeUser] = useState(false);
+  const [excludeUserId, setExcludeUserId] = useState('');
+  const { addToast } = useToast();
 
   const history = useHistory();
 
@@ -69,6 +74,26 @@ const Users: React.FC = () => {
     setEditMode(false);
   }, []);
 
+  const handleExcludeAlert = useCallback((id: string) => {
+    setExcludeUserId(id);
+    setExcludeUser(true);
+  }, []);
+
+  const handleExclude = useCallback(() => {
+    api.delete(`users/${excludeUserId}`).then((response) => {
+      if (response.status === 200)
+        addToast({
+          type: 'success',
+          title: 'sucesso',
+          description: 'Usuário excluído com sucesso.',
+        });
+      history.go(0);
+    });
+  }, [addToast, excludeUserId, history]);
+  const handleExcludeCancel = useCallback(() => {
+    setExcludeUser(false);
+  }, []);
+
   return (
     <Container>
       <Title>
@@ -79,7 +104,10 @@ const Users: React.FC = () => {
           <ImPlus size={15} /> Cadastrar usuário
         </StyledButton>
       </ButtonDiv>
-      <UsersTable handleEdit={(id) => handleEdit(id)} />
+      <UsersTable
+        handleEdit={(id) => handleEdit(id)}
+        handleExclude={(id) => handleExcludeAlert(id)}
+      />
       {addUserAlert && (
         <CreateUser
           handleConfirm={handleConfirm}
@@ -95,6 +123,14 @@ const Users: React.FC = () => {
           openAlert
           userEdit={idEdit}
           open
+        />
+      )}
+      {excludeUser && (
+        <Alert
+          title="Tem certeza que deseja excluir?"
+          open
+          handleConfirm={handleExclude}
+          handleCancel={handleExcludeCancel}
         />
       )}
     </Container>
