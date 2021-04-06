@@ -134,6 +134,7 @@ const CustomizedTables: React.FC<TableProps> = ({ handleOutputProducts }) => {
                       onChange={(event) => handleSelectAllClick(event)}
                     />
                   </StyledTableCell>
+                  <StyledTableCell align={alignTitle}>Código </StyledTableCell>
                   <StyledTableCell align={alignTitle}>Nome </StyledTableCell>
                   <StyledTableCell align={alignTitle}>Modelo </StyledTableCell>
                   <StyledTableCell align={alignTitle}>
@@ -158,6 +159,9 @@ const CustomizedTables: React.FC<TableProps> = ({ handleOutputProducts }) => {
                           // onChange={handleChange}
                           checked={isItemSelected}
                         />
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {product.product_number}
                       </StyledTableCell>
                       <StyledTableCell align="left">
                         {product.name}

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '../../../components/Button';
 
 export const Container = styled.div`
   display: flex;
@@ -9,7 +10,6 @@ export const Container = styled.div`
   bottom: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 export const Title = styled.div`
@@ -23,47 +23,34 @@ export const Title = styled.div`
   h1 {
     color: #000;
     padding: 20px;
-    margin-right: auto;
-  }
-
-  form {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    max-width: 300px;
-
-    button {
-      border: transparent;
-      background: transparent;
-    }
+    margin-right: calc(100% - 600px);
   }
 `;
 
 export const ButtonDiv = styled.div`
   display: flex;
+  width: 100%;
+  height: 56px;
   align-items: center;
-  margin-left: 80px;
+  justify-content: flex-end;
+  margin: 0;
+  margin-left: auto;
+  margin-right: 50px;
+
   button {
     display: flex;
-    margin: 0 40px 0 80px;
-    align-items: center;
+    vertical-align: middle;
+    color: white;
+    width: 300px;
     svg {
       margin-right: 10px;
     }
   }
 `;
 
-export const ProductsHeader = styled.div`
+export const StyledButton = styled(Button)`
+  max-width: 200px;
+  margin-right: 40px;
   width: 100%;
-  max-height: 50px;
-  height: calc(100% - 6px);
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-  color: #000;
-
-  h2 {
-    width: 25%;
-    flex-direction: column;
-  }
+  place-content: center;
 `;

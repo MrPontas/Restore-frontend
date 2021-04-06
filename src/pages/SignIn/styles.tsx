@@ -24,29 +24,13 @@ export const Content = styled.div`
   }
 
   form {
-    margin-bottom: 80px;
+    margin-bottom: 20px;
     width: 340px;
     text-align: center;
 
     h1 {
       margin-bottom: 24px;
       color: #444444;
-    }
-
-    button {
-      background-color: #82af99;
-      border-radius: 5px;
-      border: 0;
-      padding: 16px;
-      margin-top: 30px;
-      width: 100%;
-      color: #312e38;
-      font-weight: 500;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background: ${shade(0.2, '#82af99')};
-      }
     }
   }
 `;
@@ -63,4 +47,17 @@ export const Background = styled.div`
   flex: 1;
   background: url(${signInBackground}) no-repeat center;
   background-size: cover;
+`;
+
+export const LinkButton = styled.button`
+  color: #444444;
+  border: transparent;
+  background-color: transparent;
+  text-decoration: underline;
+  transition: color 0.2s;
+  margin-top: 20px;
+
+  &:hover {
+    color: ${shade(-0.4, '#444444')};
+  }
 `;

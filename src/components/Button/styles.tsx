@@ -8,7 +8,7 @@ export const Container = styled.button`
   padding: 16px;
   margin-top: 30px;
   width: 100%;
-  color: #312e38;
+  color: #fff;
   font-weight: 500;
   transition: background-color 0.2s;
 

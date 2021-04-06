@@ -4,7 +4,9 @@ export interface CategoryProps {
   id: string;
   name: string;
   description?: string;
+  category_number: number;
 }
+
 export interface MoldProps {
   id: string;
   name: string;
@@ -36,6 +38,7 @@ export interface ProductProps {
   sale_value: number;
   purchase_value: number;
   brand: string;
+  product_number: string;
   provider: ProviderProps;
   category: CategoryProps;
   user: UserProps;

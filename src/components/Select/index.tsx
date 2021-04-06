@@ -55,6 +55,7 @@ const Select: React.FC<SelectProps> = ({
             {...rest}
           >
             {hasDefaultValue && <option>Selecione...</option>}
+
             {options.map((option) => (
               <option id={option.id} key={option.id}>
                 {option.name}

@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BsFillExclamationTriangleFill } from 'react-icons/bs';
 import { SiIfixit } from 'react-icons/si';
-
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -34,6 +33,7 @@ const RegisterView: React.FC = () => {
   const { addToast } = useToast();
   const { id } = useParams<ParamsProps>();
 
+  const history = useHistory();
   const formRef = useRef<FormHandles>(null);
   const [products, setProducts] = useState<ProductProps[] | undefined>(
     undefined
@@ -66,10 +66,13 @@ const RegisterView: React.FC = () => {
         type: 'success',
         title: 'Registro excluído com sucesso.',
       });
+      setTimeout(() => {
+        history.go(-1);
+      }, 1000);
     } catch (err) {
       throw new Error(err);
     }
-  }, [register, addToast]);
+  }, [register, addToast, history]);
 
   useEffect(() => {
     api.get(`registers/${id}`).then((response) => {

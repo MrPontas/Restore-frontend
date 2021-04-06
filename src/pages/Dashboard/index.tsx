@@ -1,19 +1,24 @@
 import React from 'react';
-
 import { FiLogOut } from 'react-icons/fi';
-
 import { Switch } from 'react-router-dom';
+
 import SideBar from '../../components/SideBar';
+
+import Users from './Users';
+import { UserProps } from '../../utils/props';
+
 import { Background, Container, Header } from './styles';
 import { useAuth } from '../../hooks/AuthContext';
 import Route from '../../routes/Route';
+
 import Products from './Products';
 import ProductView from './ProductView';
-import { UserProps } from '../../utils/props';
+
 import Registers from './Registers';
 import RegisterView from './RegisterView';
 import AddRegister from './Add Register';
-import Users from './Users';
+
+import Categories from './Categories';
 
 const Dashboard: React.FC = () => {
   const { signOut, ensureAuthenticated } = useAuth();
@@ -67,6 +72,7 @@ const Dashboard: React.FC = () => {
           isPrivate
         />
         <Route path="/dashboard/users" component={Users} isPrivate isStrict />
+        <Route path="/dashboard/categories" component={Categories} isPrivate />
       </Switch>
 
       <Background />

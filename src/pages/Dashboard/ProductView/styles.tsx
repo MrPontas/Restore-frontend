@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { shade } from 'polished';
 
 interface StatusProps {
   inStock: boolean;
@@ -94,5 +95,24 @@ export const Status = styled.div<StatusProps>`
     margin-left: 5px;
     color: #494949;
     font-weight: 100;
+  }
+`;
+
+export const ButtonAdd = styled.button`
+  display: flex;
+  place-content: center;
+  background-color: #82af99;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  transition: background-color 0.2s;
+
+  margin-top: 30px;
+  svg {
+    align-self: center;
+  }
+  &:hover {
+    background-color: ${shade(-0.1, '#82af99')};
   }
 `;

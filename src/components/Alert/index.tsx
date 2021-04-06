@@ -57,7 +57,6 @@ const Alert: React.FC<AlertProps> = ({
   );
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [toRegisters, setToRegisters] = useState(false);
 
   const handleClickOpen = useCallback(() => {
     setOpen(true);
@@ -67,7 +66,6 @@ const Alert: React.FC<AlertProps> = ({
   }, [openAlert]);
   const handleConfirmButton = useCallback(() => {
     setOpen(false);
-    setToRegisters(true);
     handleConfirm();
   }, [handleConfirm]);
 
@@ -77,7 +75,6 @@ const Alert: React.FC<AlertProps> = ({
 
   return (
     <div>
-      {toRegisters ? <Redirect to="/dashboard/registers" /> : null}
       {button && (
         <ButtonExclude type="button" onClick={handleClickOpen}>
           {IconB && <IconB />}

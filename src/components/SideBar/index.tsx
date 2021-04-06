@@ -63,14 +63,6 @@ const SideBar: React.FC = () => {
         <MdChromeReaderMode size={30} />
         Categorias
       </StyledNavLink>
-      <StyledNavLink
-        to="/dashboard/report"
-        activeStyle={activeStyle}
-        style={style}
-      >
-        <IoIosPaper size={30} />
-        Relatórios
-      </StyledNavLink>
       {user.administrator && (
         <StyledNavLink
           to="/dashboard/users"

@@ -63,6 +63,7 @@ const ProductView: React.FC = () => {
   const [categorySelect, setCategorySelect] = useState('');
   const [providerSelect, setProviderSelect] = useState('');
   const [productInStock, setProductInStock] = useState(false);
+  const [obs, setObs] = useState('');
 
   const handleEdition = (): void => {
     if (edition) return;
@@ -94,7 +95,6 @@ const ProductView: React.FC = () => {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           color: Yup.string().required('Cor obrigatória'),
-          brand: Yup.string().required('Marca obrigatória'),
           purchase_value: Yup.string().required('Valor de compra obrigatório'),
           sale_value: Yup.string().required('Valor de venda obrigatório'),
         });
@@ -326,6 +326,7 @@ const ProductView: React.FC = () => {
                 defaultValue={product.provider.name}
                 readOnly={readOnly}
               />
+
               <Select
                 name="category"
                 id="category"

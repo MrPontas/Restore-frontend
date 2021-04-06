@@ -62,6 +62,7 @@ const AddProduct: React.FC<AddInputProductProps> = ({
     ProviderProps | undefined
   >(undefined);
   const [redirect, setRedirect] = useState(false);
+  const [obs, setObs] = useState('');
 
   const handleSubmit = useCallback(
     async (data) => {
@@ -112,7 +113,6 @@ const AddProduct: React.FC<AddInputProductProps> = ({
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           color: Yup.string().required('Cor obrigatória'),
-          brand: Yup.string().required('Marca obrigatória'),
           purchase_value: Yup.string().required('Valor de compra obrigatório'),
           sale_value: Yup.string().required('Valor de venda obrigatório'),
         });
@@ -151,6 +151,7 @@ const AddProduct: React.FC<AddInputProductProps> = ({
           category: categorySelect,
           mold: moldSelect,
           provider: providerSelect,
+          obs,
         } as ProductProps;
         if (handleSubmitProduct) handleSubmitProduct(product);
       } catch (err) {
@@ -177,6 +178,7 @@ const AddProduct: React.FC<AddInputProductProps> = ({
       sizeSelect,
       typeSelect,
       handleSubmitProduct,
+      obs,
     ]
   );
 
@@ -195,6 +197,13 @@ const AddProduct: React.FC<AddInputProductProps> = ({
       setProviders(response.data);
     });
   }, []);
+
+  const handleObsChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setObs(e.target.value);
+    },
+    [setObs]
+  );
 
   const handleRedirect = useCallback(() => {
     setRedirect(true);
@@ -217,10 +226,14 @@ const AddProduct: React.FC<AddInputProductProps> = ({
   }, []);
   const handleCategory = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     const { selectedIndex } = e.target.options;
-    const eventCategory = e.target.options[selectedIndex].getAttribute('id');
-    const categoryName = e.target.value;
-    if (eventCategory) {
-      setCategorySelect({ id: eventCategory, name: categoryName });
+    const eventCategoryId = e.target.options[selectedIndex].getAttribute('id');
+    const eventCategoryName = e.target.value;
+    if (eventCategoryId) {
+      setCategorySelect({
+        id: eventCategoryId,
+        name: eventCategoryName,
+        category_number: 0,
+      });
     }
   }, []);
   const handleProvider = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
@@ -329,7 +342,7 @@ const AddProduct: React.FC<AddInputProductProps> = ({
           </div>
         </InputForm>
         <h1>Observações</h1>
-        <Textarea name="obs" />
+        <Textarea name="obs" onChange={handleObsChange} value={obs} />
 
         <Button type="submit">Adicionar</Button>
         <Button type="button" onClick={handleRedirect}>

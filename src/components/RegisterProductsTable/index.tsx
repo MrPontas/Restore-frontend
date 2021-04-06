@@ -86,6 +86,7 @@ const CustomizedTables: React.FC<TableProps> = ({ products }) => {
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>
+              <StyledTableCell align={alignTitle}>Código</StyledTableCell>
               <StyledTableCell align={alignTitle}>Nome</StyledTableCell>
               <StyledTableCell align={alignTitle}>Modelo</StyledTableCell>
               <StyledTableCell align={alignTitle}>Categoria</StyledTableCell>
@@ -98,6 +99,9 @@ const CustomizedTables: React.FC<TableProps> = ({ products }) => {
           <TableBody>
             {products.map((product) => (
               <StyledTableRow key={product.id}>
+                <StyledTableCell align="left">
+                  {product.product_number}
+                </StyledTableCell>
                 <StyledTableCell align="left">{product.name}</StyledTableCell>
                 <StyledTableCell align="left">
                   {product.mold.name}

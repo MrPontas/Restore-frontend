@@ -8,22 +8,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    colorPrimary: {
-      color: '#c74444',
-    },
-    colorSecondary: {
-      color: '#9c9b9b',
-    },
-  })
-);
-
 interface AlertProps extends DialogProps {
+  open: boolean;
   title: string;
   description?: string;
   handleConfirm: () => void;
-  handleCancel: () => void;
+  handleCancel?: () => void;
+  confirmColor?: string;
+  noCancelButton?: boolean;
 }
 
 const GenericAlert: React.FC<AlertProps> = ({
@@ -31,8 +23,20 @@ const GenericAlert: React.FC<AlertProps> = ({
   description,
   handleConfirm,
   handleCancel,
+  confirmColor = '#c74444',
+  noCancelButton = false,
   ...rest
 }) => {
+  const useStyles = makeStyles(() =>
+    createStyles({
+      colorPrimary: {
+        color: confirmColor,
+      },
+      colorSecondary: {
+        color: '#9c9b9b',
+      },
+    })
+  );
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -42,7 +46,7 @@ const GenericAlert: React.FC<AlertProps> = ({
 
   const handleCancelAlert = useCallback(() => {
     setOpen(false);
-    handleCancel();
+    if (handleCancel) handleCancel();
   }, [handleCancel]);
 
   const handleConfirmAlert = useCallback(() => {
@@ -71,14 +75,16 @@ const GenericAlert: React.FC<AlertProps> = ({
         >
           Confirmar
         </Button>
-        <Button
-          onClick={handleCancelAlert}
-          className={classes.colorSecondary}
-          color="secondary"
-          autoFocus
-        >
-          Cancelar
-        </Button>
+        {!noCancelButton && (
+          <Button
+            onClick={handleCancelAlert}
+            className={classes.colorSecondary}
+            color="secondary"
+            autoFocus
+          >
+            Cancelar
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

@@ -2,14 +2,17 @@ import React, { useCallback, useRef, useState } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { BiSearch } from 'react-icons/bi';
+import { IoIosPaper } from 'react-icons/io';
 import api from '../../../services/api';
 
 import Input from '../../../components/Input';
+import Button from '../../../components/Button';
 
 import ProductsTable from '../../../components/ProductTable';
 import ProductsSearchedTable from '../../../components/RegisterProductsTable';
+import Report from '../../../components/Reports';
 
-import { Container, Title } from './styles';
+import { Container, Title, ButtonDiv } from './styles';
 import { ProductProps } from '../../../utils/props';
 
 interface SearchProps {
@@ -21,6 +24,7 @@ const Products: React.FC = () => {
   const [productsSearched, setProductsSearched] = useState<
     ProductProps[] | undefined
   >(undefined);
+  const [openReport, setOpenReport] = useState(false);
 
   const handleSearch = useCallback(
     (data: SearchProps) => {
@@ -34,6 +38,14 @@ const Products: React.FC = () => {
     [setProductsSearched]
   );
 
+  const handleCloseDialog = useCallback(() => {
+    setOpenReport(false);
+  }, []);
+
+  const handleReportButton = useCallback(() => {
+    setOpenReport(true);
+  }, []);
+
   return (
     <Container>
       <Title>
@@ -42,11 +54,18 @@ const Products: React.FC = () => {
           <Input name="search" icon={BiSearch} placeholder="Buscar nome..." />
           <button type="submit"> </button>
         </Form>
+        <ButtonDiv>
+          <Button onClick={handleReportButton}>
+            <IoIosPaper />
+            Gerar relatório
+          </Button>
+        </ButtonDiv>
       </Title>
       {productsSearched && (
         <ProductsSearchedTable products={productsSearched} />
       )}
       {!productsSearched && <ProductsTable />}
+      {openReport && <Report handleCloseDialog={handleCloseDialog} />}
     </Container>
   );
 };

@@ -267,7 +267,11 @@ const EditProduct: React.FC<AddProductProps> = ({
     const eventCategory = e.target.options[selectedIndex].getAttribute('id');
     const categoryName = e.target.value;
     if (eventCategory) {
-      setCategorySelect({ id: eventCategory, name: categoryName });
+      setCategorySelect({
+        id: eventCategory,
+        name: categoryName,
+        category_number: 0,
+      });
     }
   }, []);
   const handleProvider = useCallback((e: ChangeEvent<HTMLSelectElement>) => {

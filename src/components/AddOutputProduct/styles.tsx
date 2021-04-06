@@ -15,3 +15,14 @@ export const CancelButton = styled(Button)`
     background: ${shade(0.2, '#b6b6b6')};
   }
 `;
+
+export const ErrorSpan = styled.span`
+  display: flex;
+  place-content: center;
+  color: #c53030;
+  font-size: 20px;
+
+  svg {
+    margin-right: 10px;
+  }
+`;
