@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333/',
+  baseURL: 'https://restore-brecho.herokuapp.com',
 });
 api.defaults.headers.authorization = localStorage.getItem('@ReStore:token');
 
