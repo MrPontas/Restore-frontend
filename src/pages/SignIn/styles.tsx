@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
+import { makeStyles, createStyles } from '@material-ui/core';
 import signInBackground from '../../assets/background.jpeg';
 
 export const Container = styled.div`
@@ -61,3 +62,9 @@ export const LinkButton = styled.button`
     color: ${shade(-0.4, '#444444')};
   }
 `;
+
+export const useStyles = makeStyles(() =>
+  createStyles({
+    colorPrimary: { color: '#82af99' },
+  })
+);

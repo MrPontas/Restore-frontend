@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { IoExitOutline } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { FiBox } from 'react-icons/fi';
 
 import { FormHandles } from '@unform/core';

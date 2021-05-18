@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
 import { VscSymbolKeyword } from 'react-icons/vsc';
 import { RiShirtLine } from 'react-icons/ri';
 import { FiUsers } from 'react-icons/fi';
 import { MdChromeReaderMode } from 'react-icons/md';
-import { IoIosPaper } from 'react-icons/io';
+// import { IoIosPaper } from 'react-icons/io';
 
 import { Container, StyledNavLink } from './styles';
 import logoHeader from '../../assets/logo.png';
