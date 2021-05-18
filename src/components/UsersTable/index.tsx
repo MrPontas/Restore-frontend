@@ -68,7 +68,7 @@ const useStyles = makeStyles({
     alignSelf: 'center',
   },
   contentCell: {
-    width: '17,5%',
+    width: '25%',
   },
   button: {
     backgroundColor: '#fff',

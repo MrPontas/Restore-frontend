@@ -67,13 +67,13 @@ const useStyles = makeStyles({
     alignSelf: 'center',
   },
   codeCell: {
-    width: '7%',
+    width: '10%',
   },
   nameCell: {
-    width: '17,5%',
+    width: '25%',
   },
   descriptionCell: {
-    width: '28%',
+    width: '40%',
   },
   button: {
     backgroundColor: '#fff',
