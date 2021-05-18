@@ -31,7 +31,7 @@ const Registers: React.FC = () => {
   const [registers, setRegisters] = useState<RegisterProps[] | undefined>(
     undefined
   );
-  const [registerType, setRegisterType] = useState('I');
+  const [registerType, setRegisterType] = useState('A');
 
   useEffect(() => {
     api.get('registers').then((response) => {

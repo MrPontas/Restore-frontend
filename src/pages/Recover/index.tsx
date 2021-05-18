@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-  Fragment,
-} from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 
 import { FiLock } from 'react-icons/fi';
@@ -28,7 +22,6 @@ import { useToast } from '../../hooks/ToastContext';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import Loading from '../../components/Loading';
 
 interface ParamsProps {
   token: string;

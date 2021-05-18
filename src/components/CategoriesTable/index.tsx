@@ -66,30 +66,27 @@ const useStyles = makeStyles({
     marginTop: '50px',
     alignSelf: 'center',
   },
+  codeCell: {
+    width: '7%',
+  },
+  nameCell: {
+    width: '17,5%',
+  },
+  descriptionCell: {
+    width: '28%',
+  },
   button: {
-    MaxHeight: '100%',
-    MaxWidth: '100%',
     backgroundColor: '#fff',
     borderRadius: '5px',
-    padding: '2px',
-    paddingLeft: '6px',
-    paddingBottom: '0px',
-    marginRight: '3px',
+    width: '35px',
+    height: '35px',
   },
   buttonDlt: {
-    MaxHeight: '100%',
-    MaxWidth: '100%',
+    width: '35px',
+    height: '35px',
     color: '#fff',
     backgroundColor: '#c74444',
     borderRadius: '5px',
-    padding: '2px 4px 0 3px',
-  },
-  buttonCell: {
-    marginRight: '30px',
-    maxWidth: '10px',
-  },
-  nameCell: {
-    maxWidth: '50px',
   },
 });
 
@@ -130,13 +127,18 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align={alignTitle} className={classes.nameCell}>
+              <StyledTableCell align={alignTitle} className={classes.codeCell}>
                 Código
               </StyledTableCell>
               <StyledTableCell align={alignTitle} className={classes.nameCell}>
                 Nome
               </StyledTableCell>
-              <StyledTableCell align={alignTitle}>Descrição</StyledTableCell>
+              <StyledTableCell
+                align={alignTitle}
+                className={classes.descriptionCell}
+              >
+                Descrição
+              </StyledTableCell>
               <StyledTableCell align={alignTitle}> </StyledTableCell>
               <StyledTableCell align={alignTitle}> </StyledTableCell>
             </TableRow>
@@ -154,11 +156,14 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
                   >
                     {category.name}
                   </StyledTableCell>
-                  <StyledTableCell align={alignTitle}>
+                  <StyledTableCell
+                    align={alignTitle}
+                    className={classes.descriptionCell}
+                  >
                     {category.description}
                   </StyledTableCell>
 
-                  <StyledTableCell align="right" className={classes.buttonCell}>
+                  <StyledTableCell align="right">
                     <ButtonTooltip
                       title="Editar"
                       positionX="-50px"
@@ -174,10 +179,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
                       </button>
                     </ButtonTooltip>
                   </StyledTableCell>
-                  <StyledTableCell
-                    align="center"
-                    className={classes.buttonCell}
-                  >
+                  <StyledTableCell align="left">
                     <ButtonTooltip
                       title="Excluir"
                       positionX="-50px"

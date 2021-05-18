@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaRegEdit, FaTrashAlt } from 'react-icons/fa';
 
 import {
@@ -67,27 +67,21 @@ const useStyles = makeStyles({
     marginTop: '50px',
     alignSelf: 'center',
   },
+  contentCell: {
+    width: '17,5%',
+  },
   button: {
-    MaxHeight: '100%',
-    MaxWidth: '100%',
     backgroundColor: '#fff',
     borderRadius: '5px',
-    padding: '2px',
-    paddingLeft: '6px',
-    paddingBottom: '0px',
-    marginRight: '3px',
+    width: '35px',
+    height: '35px',
   },
   buttonDlt: {
-    MaxHeight: '100%',
-    MaxWidth: '100%',
+    width: '35px',
+    height: '35px',
     color: '#fff',
     backgroundColor: '#c74444',
     borderRadius: '5px',
-    padding: '2px 4px 0 3px',
-  },
-  buttonCell: {
-    marginRight: '30px',
-    maxWidth: '10px',
   },
 });
 
@@ -118,9 +112,22 @@ const UserTable: React.FC<UserTableProps> = ({ handleEdit, handleExclude }) => {
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align={alignTitle}>Nome </StyledTableCell>
-              <StyledTableCell align={alignTitle}>Login </StyledTableCell>
-              <StyledTableCell align={alignTitle}>
+              <StyledTableCell
+                align={alignTitle}
+                className={classes.contentCell}
+              >
+                Nome
+              </StyledTableCell>
+              <StyledTableCell
+                align={alignTitle}
+                className={classes.contentCell}
+              >
+                Login
+              </StyledTableCell>
+              <StyledTableCell
+                align={alignTitle}
+                className={classes.contentCell}
+              >
                 Tipo de usuário
               </StyledTableCell>
               <StyledTableCell align={alignTitle}> </StyledTableCell>
@@ -131,12 +138,16 @@ const UserTable: React.FC<UserTableProps> = ({ handleEdit, handleExclude }) => {
             {users.map((user) => {
               return (
                 <StyledTableRow>
-                  <StyledTableCell align="left">{user.name}</StyledTableCell>
-                  <StyledTableCell align="left">{user.login}</StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell align="left" className={classes.contentCell}>
+                    {user.name}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" className={classes.contentCell}>
+                    {user.login}
+                  </StyledTableCell>
+                  <StyledTableCell align="left" className={classes.contentCell}>
                     {user.administrator ? 'Administrador' : 'Comum'}
                   </StyledTableCell>
-                  <StyledTableCell className={classes.buttonCell}>
+                  <StyledTableCell align="right">
                     {user.login === 'admin' ? (
                       ' '
                     ) : (
@@ -156,7 +167,7 @@ const UserTable: React.FC<UserTableProps> = ({ handleEdit, handleExclude }) => {
                       </ButtonTooltip>
                     )}
                   </StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell align="left">
                     {user.login === 'admin' ? (
                       ' '
                     ) : (
