@@ -1,17 +1,15 @@
-import { shade } from 'polished';
 import styled from 'styled-components';
+import { createStyles, makeStyles } from '@material-ui/core';
 import Button from '../Button';
 import LabelInput from '../LabelInput';
 
-export const CancelButton = styled(Button)`
-  color: #fff;
-  background-color: #b6b6b6;
-  max-width: 200px;
-
-  &:hover {
-    background: ${shade(0.2, '#b6b6b6')};
-  }
-`;
+export const useStyles = makeStyles(() =>
+  createStyles({
+    colorSecondary: {
+      color: '#9c9b9b',
+    },
+  })
+);
 
 export const ReportButton = styled(Button)`
   display: flex;

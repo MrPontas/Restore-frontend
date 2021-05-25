@@ -1,6 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IoExitOutline } from 'react-icons/io5';
-// import { Link } from 'react-router-dom';
 import { FiBox } from 'react-icons/fi';
 
 import { FormHandles } from '@unform/core';
@@ -10,11 +9,12 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 import {
   SearchDiv,
   StyledInputLabel,
-  CancelButton,
+  useStyles,
   ReportButton,
   ReportButtonsDiv,
 } from './styles';
@@ -24,10 +24,55 @@ interface ReportProps {
 }
 
 const Alert: React.FC<ReportProps> = ({ handleCloseDialog }) => {
+  useEffect(() => {
+    const today = new Date();
+
+    const startDateDefault = `${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-01`;
+    const b = '0';
+    let position = 5;
+    let output = startDateDefault;
+    if (today.getMonth() + 1 < 10)
+      output = [
+        startDateDefault.slice(0, position),
+        b,
+        startDateDefault.slice(position),
+      ].join('');
+    setStartDate(output);
+  }, []);
+
+  useEffect(() => {
+    const today = new Date();
+
+    const endDateDefault = `${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-${today.getDate()}`;
+    const b = '0';
+    let positionMonth = 5;
+    let positionDay = 8;
+    let output = endDateDefault;
+    if (today.getMonth() + 1 < 10)
+      output = [
+        endDateDefault.slice(0, positionMonth),
+        b,
+        endDateDefault.slice(positionMonth),
+      ].join('');
+    if (today.getDate() < 10)
+      output = [
+        endDateDefault.slice(0, positionDay),
+        b,
+        endDateDefault.slice(positionDay),
+      ].join('');
+    setEndDate(output);
+  }, []);
+
   const [open, setOpen] = useState(true);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const formRef = useRef<FormHandles>(null);
+
+  const classes = useStyles();
 
   const handleCancel = useCallback(() => {
     setOpen(false);
@@ -40,7 +85,7 @@ const Alert: React.FC<ReportProps> = ({ handleCloseDialog }) => {
     },
     [startDate, endDate]
   );
-  const handlStartDate = useCallback((date: string) => {
+  const handleStartDate = useCallback((date: string) => {
     setStartDate(date);
   }, []);
   return (
@@ -61,7 +106,7 @@ const Alert: React.FC<ReportProps> = ({ handleCloseDialog }) => {
                 type="date"
                 name="start"
                 value={startDate}
-                onChange={(e) => handlStartDate(e.target.value)}
+                onChange={(e) => handleStartDate(e.target.value)}
               />
               <StyledInputLabel
                 label="Até"
@@ -92,9 +137,13 @@ const Alert: React.FC<ReportProps> = ({ handleCloseDialog }) => {
           </ReportButtonsDiv>
         </DialogContent>
         <DialogActions>
-          <CancelButton onClick={handleCancel} autoFocus>
+          <Button
+            onClick={handleCancel}
+            autoFocus
+            className={classes.colorSecondary}
+          >
             Cancelar
-          </CancelButton>
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

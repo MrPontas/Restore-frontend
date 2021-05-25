@@ -25,7 +25,6 @@ export const Container = styled.div<ContainerProps>`
       ${(props) => props.positionX},
       ${(props) => props.positionY}
     );
-
     &::before {
       width: 0;
       height: 0;

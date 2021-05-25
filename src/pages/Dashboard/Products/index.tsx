@@ -21,9 +21,8 @@ interface SearchProps {
 
 const Products: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const [productsSearched, setProductsSearched] = useState<
-    ProductProps[] | undefined
-  >(undefined);
+  const [productsSearched, setProductsSearched] =
+    useState<ProductProps[] | undefined>(undefined);
   const [openReport, setOpenReport] = useState(false);
 
   const handleSearch = useCallback(
@@ -32,7 +31,7 @@ const Products: React.FC = () => {
         setProductsSearched(undefined);
       }
       api.get(`products/?name=${data.search}`).then((products) => {
-        setProductsSearched(products.data);
+        setProductsSearched(products.data.products);
       });
     },
     [setProductsSearched]

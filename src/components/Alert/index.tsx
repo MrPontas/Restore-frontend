@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import { createStyles, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';

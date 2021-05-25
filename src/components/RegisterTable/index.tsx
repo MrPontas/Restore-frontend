@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   withStyles,
@@ -16,7 +16,6 @@ import Paper from '@material-ui/core/Paper';
 import { GrView } from 'react-icons/gr';
 import { RegisterProps } from '../../utils/props';
 import getHoursBr from '../../utils/getDateBr';
-import api from '../../services/api';
 
 import Loading from '../Loading';
 
@@ -40,12 +39,10 @@ const StyledTableCell = withStyles((theme: Theme) =>
 
 const useStyles = makeStyles({
   button: {
-    MaxHeight: '100%',
-    MaxWidth: '100%',
+    width: '35px',
+    height: '35px',
     backgroundColor: '#fff',
-    // color: '#fff',
     borderRadius: '5px',
-    padding: '2px',
     marginRight: '3px',
   },
   styledRow: {
@@ -102,7 +99,7 @@ const CustomizedTables: React.FC<RegisterTableProps> = ({
           <Message>Parece que não há registros :(</Message>
         ) : (
           <TableContainer component={Paper}>
-            <Table aria-label="customized table">
+            <Table aria-label="customized table" stickyHeader>
               <TableHead>
                 <TableRow>
                   <StyledTableCell align={alignTitle}>
@@ -137,8 +134,8 @@ const CustomizedTables: React.FC<RegisterTableProps> = ({
                       <NavLink to={`/dashboard/registerView/${register.id}`}>
                         <ButtonTooltip
                           title="Visualizar"
-                          positionX="-50px"
-                          positionY="-50px"
+                          positionX="-134px"
+                          positionY="-5px"
                         >
                           <button
                             id="view-button"

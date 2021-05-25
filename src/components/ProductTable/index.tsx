@@ -15,11 +15,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { GrView } from 'react-icons/gr';
 import { ProductProps } from '../../utils/props';
-import sortArray from '../../utils/sortObjectArray';
 import api from '../../services/api';
 import Loading from '../Loading';
 import { Message } from './styles';
-
 import ButtonTooltip from '../ButtonTooltip';
 
 const alignTitle = 'left';
@@ -38,12 +36,10 @@ const StyledTableCell = withStyles((theme: Theme) =>
 
 const useStyles = makeStyles({
   button: {
-    MaxHeight: '100%',
-    MaxWidth: '100%',
+    width: '35px',
+    height: '35px',
     backgroundColor: '#fff',
-    // color: '#fff',
     borderRadius: '5px',
-    padding: '2px',
     marginRight: '3px',
   },
   styledRow: {
@@ -80,8 +76,8 @@ const CustomizedTables: React.FC = () => {
 
   useEffect(() => {
     api.get('products').then((response) => {
-      sortArray(response.data);
-      setProducts(response.data);
+      setProducts(response.data.products);
+
       setFinishedData(true);
     });
   }, [setFinishedData]);
@@ -93,7 +89,7 @@ const CustomizedTables: React.FC = () => {
           <Message>Parece que não há produtos :(</Message>
         ) : (
           <TableContainer component={Paper}>
-            <Table aria-label="customized table">
+            <Table aria-label="customized table" stickyHeader>
               <TableHead>
                 <TableRow>
                   <StyledTableCell align={alignTitle}>Código </StyledTableCell>
@@ -139,8 +135,8 @@ const CustomizedTables: React.FC = () => {
                       <NavLink to={`/dashboard/productView/${product.id}`}>
                         <ButtonTooltip
                           title="Visualizar"
-                          positionX="-50px"
-                          positionY="-50px"
+                          positionX="-134px"
+                          positionY="-4px"
                         >
                           <button
                             id="view-button"

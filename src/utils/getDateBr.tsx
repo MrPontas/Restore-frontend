@@ -1,7 +1,18 @@
 import { parseISO, format } from 'date-fns';
 
-const getDateBr = (date: string): string => {
+export const getDateWithoutHoursBr = (date: string): string => {
   const hour = parseISO(date);
+  const hourBR = format(hour.setHours(hour.getHours()), `dd'/'MM'/'yy`);
+  return hourBR;
+};
+
+const getDateBr = (date: string | Date): string => {
+  let hour;
+  if (typeof date === 'string') {
+    hour = parseISO(date);
+  } else {
+    hour = date;
+  }
   const hourBR = format(
     hour.setHours(hour.getHours() - 3),
     `dd'/'MM'/'yy 'às' HH:mm`

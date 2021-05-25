@@ -107,7 +107,7 @@ const Categories: React.FC = () => {
         addToast({
           type: 'error',
           title: 'Não foi possível excluir a categoria',
-          description: 'A categoria contém produtos instanciados!',
+          description: `Há produtos desse tipo cadastrados no sistema!`,
         });
       });
     setExcludeCategory(false);

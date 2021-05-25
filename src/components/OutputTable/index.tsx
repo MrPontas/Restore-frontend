@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 
 import { ProductProps } from '../../utils/props';
-import sortArray from '../../utils/sortObjectArray';
 import api from '../../services/api';
 import Loading from '../Loading';
 import { Message } from './styles';
@@ -91,8 +90,7 @@ const CustomizedTables: React.FC<TableProps> = ({ handleOutputProducts }) => {
 
   useEffect(() => {
     api.get(`products/?status=I`).then((response) => {
-      sortArray(response.data);
-      setProducts(response.data);
+      setProducts(response.data.products);
       setFinishedData(true);
     });
   }, [setFinishedData]);
@@ -126,7 +124,7 @@ const CustomizedTables: React.FC<TableProps> = ({ handleOutputProducts }) => {
           <Message>Parece que não há produtos :(</Message>
         ) : (
           <TableContainer component={Paper}>
-            <Table aria-label="customized table">
+            <Table aria-label="customized table" stickyHeader>
               <TableHead>
                 <TableRow>
                   <StyledTableCell align={alignTitle}>

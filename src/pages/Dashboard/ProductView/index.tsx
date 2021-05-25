@@ -48,13 +48,11 @@ const ProductView: React.FC = () => {
   const [readOnly, setReadOnly] = useState(true);
 
   const [edition, setEdition] = useState(false);
-  const [categories, setCategories] = useState<CategoryProps[] | undefined>(
-    undefined
-  );
+  const [categories, setCategories] =
+    useState<CategoryProps[] | undefined>(undefined);
   const [molds, setMolds] = useState<MoldProps[] | undefined>(undefined);
-  const [providers, setProviders] = useState<ProviderProps[] | undefined>(
-    undefined
-  );
+  const [providers, setProviders] =
+    useState<ProviderProps[] | undefined>(undefined);
   const [product, setProduct] = useState<ProductProps | undefined>(undefined);
   const [sizeSelect, setSizeSelect] = useState('');
   const [genreSelect, setGenreSelect] = useState('');
@@ -63,7 +61,6 @@ const ProductView: React.FC = () => {
   const [categorySelect, setCategorySelect] = useState('');
   const [providerSelect, setProviderSelect] = useState('');
   const [productInStock, setProductInStock] = useState(false);
-  const [obs, setObs] = useState('');
 
   const handleEdition = (): void => {
     if (edition) return;

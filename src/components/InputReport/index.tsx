@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,9 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 // import { GrView } from 'react-icons/gr';
 import { ProductProps } from '../../utils/props';
-import sortArray from '../../utils/sortObjectArray';
-import api from '../../services/api';
-import Loading from '../Loading';
 
 // import ButtonTooltip from '../ButtonTooltip';
 
@@ -24,7 +21,7 @@ const StyledTableCell = withStyles((theme: Theme) =>
       color: theme.palette.common.black,
     },
     body: {
-      fontSize: 14,
+      fontSize: 12,
     },
   })
 )(TableCell);
@@ -35,89 +32,73 @@ const StyledTableRow = withStyles((theme: Theme) =>
       '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
       },
-      marginTop: '5px',
     },
   })
 )(TableRow);
 
 interface TableProps {
-  status: string | null;
-  start: string | null;
-  end: string | null;
+  products: ProductProps[];
 }
 
-const CustomizedTables: React.FC<TableProps> = ({ status, start, end }) => {
-  const [products, setProducts] = useState<ProductProps[]>([]);
-  const [finishedData, setFinishedData] = useState(false);
-
-  useEffect(() => {
-    api
-      .get(`products/?status=${status}&start=${start}&end=${end}`)
-      .then((response) => {
-        sortArray(response.data);
-        setProducts(response.data);
-        setFinishedData(true);
-      });
-  }, [setFinishedData, end, start, status]);
-
-  if (finishedData) {
-    return (
-      <>
-        <TableContainer
-          component={Paper}
-          style={{
-            margin: '50px auto 0 auto',
-            width: '1000px',
-          }}
-        >
-          <Table aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align={alignTitle}>Código </StyledTableCell>
-                <StyledTableCell align={alignTitle}>Nome </StyledTableCell>
-                <StyledTableCell align={alignTitle}>Compra </StyledTableCell>
-                <StyledTableCell align={alignTitle}>Venda </StyledTableCell>
-                <StyledTableCell align={alignTitle}>Tipo</StyledTableCell>
-                <StyledTableCell align={alignTitle}>Categoria</StyledTableCell>
-                <StyledTableCell align={alignTitle}>Fornecedor</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {products.map((product) => (
-                <StyledTableRow key={product.id}>
-                  <StyledTableCell align="left">
-                    {product.product_number}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">{product.name}</StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.purchase_value.toLocaleString('pt-br', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    })}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.sale_value.toLocaleString('pt-br', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    })}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.purchase_type === 'C' ? 'Consignado' : 'Próprio'}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.category.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    {product.provider.name}
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </>
-    );
-  }
-  return <Loading />;
+const CustomizedTables: React.FC<TableProps> = ({ products }) => {
+  return (
+    <>
+      <TableContainer
+        component={Paper}
+        style={{
+          width: '1000px',
+        }}
+      >
+        <Table aria-label="customized table" size="small">
+          <TableHead style={{ padding: '0' }}>
+            <TableRow>
+              <StyledTableCell align={alignTitle}>Código </StyledTableCell>
+              <StyledTableCell align={alignTitle}>Nome </StyledTableCell>
+              <StyledTableCell align={alignTitle}>
+                Preço de compra{' '}
+              </StyledTableCell>
+              <StyledTableCell align={alignTitle}>
+                Preço de venda{' '}
+              </StyledTableCell>
+              <StyledTableCell align={alignTitle}>Tipo</StyledTableCell>
+              <StyledTableCell align={alignTitle}>Categoria</StyledTableCell>
+              <StyledTableCell align={alignTitle}>Fornecedor</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products.map((product) => (
+              <StyledTableRow key={product.id}>
+                <StyledTableCell align="left">
+                  {product.product_number}
+                </StyledTableCell>
+                <StyledTableCell align="left">{product.name}</StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.purchase_value.toLocaleString('pt-br', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.sale_value.toLocaleString('pt-br', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.purchase_type === 'C' ? 'Consignado' : 'Próprio'}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.category.name}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {product.provider.name}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
 };
 export default CustomizedTables;

@@ -15,9 +15,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { GrView } from 'react-icons/gr';
 import { ProductProps } from '../../utils/props';
-import sortByName from '../../utils/sortObjectArray';
-
-import Loading from '../Loading';
 
 import ButtonTooltip from '../ButtonTooltip';
 
@@ -78,12 +75,10 @@ interface TableProps {
 const CustomizedTables: React.FC<TableProps> = ({ products }) => {
   const classes = useStyles();
 
-  sortByName(products);
-
   return (
     <>
       <TableContainer component={Paper}>
-        <Table aria-label="customized table">
+        <Table aria-label="customized table" stickyHeader>
           <TableHead>
             <TableRow>
               <StyledTableCell align={alignTitle}>Código</StyledTableCell>
@@ -125,8 +120,8 @@ const CustomizedTables: React.FC<TableProps> = ({ products }) => {
                   <NavLink to={`/dashboard/productView/${product.id}`}>
                     <ButtonTooltip
                       title="Visualizar"
-                      positionX="-50px"
-                      positionY="-50px"
+                      positionX="-134px"
+                      positionY="-5px"
                     >
                       <button
                         id="view-button"

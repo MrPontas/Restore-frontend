@@ -16,6 +16,7 @@ export const Container = styled.div`
     min-width: 100px;
     left: 270%;
     color: #ffffff;
+
     visibility: hidden;
 
     &::before {

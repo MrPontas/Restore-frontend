@@ -75,6 +75,9 @@ const useStyles = makeStyles({
   descriptionCell: {
     width: '40%',
   },
+  buttonCell: {
+    width: '12.5%',
+  },
   button: {
     backgroundColor: '#fff',
     borderRadius: '5px',
@@ -124,7 +127,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
   if (finishedData) {
     return (
       <TableContainer component={Paper} className={classes.table}>
-        <Table aria-label="customized table">
+        <Table aria-label="customized table" stickyHeader>
           <TableHead>
             <TableRow>
               <StyledTableCell align={alignTitle} className={classes.codeCell}>
@@ -163,11 +166,11 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
                     {category.description}
                   </StyledTableCell>
 
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="right" className={classes.buttonCell}>
                     <ButtonTooltip
                       title="Editar"
-                      positionX="-50px"
-                      positionY="-50px"
+                      positionX="-110px"
+                      positionY="-5px"
                     >
                       <button
                         id="edit-button"
@@ -179,11 +182,11 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
                       </button>
                     </ButtonTooltip>
                   </StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell align="left" className={classes.buttonCell}>
                     <ButtonTooltip
                       title="Excluir"
-                      positionX="-50px"
-                      positionY="-50px"
+                      positionX="-110px"
+                      positionY="-5px"
                     >
                       <button
                         id="exclude-button"

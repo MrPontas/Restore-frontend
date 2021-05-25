@@ -25,8 +25,9 @@
         "prettier"
       ],
       "rules": {
-        "prettier/prettier": "error",
+        "prettier/prettier": "warn",
         "camelcase": "off",
+        "import/no-extraneous-dependencies": "off",
         "no-param-reassign": "off",
         "no-use-before-define": "off",
         "react/jsx-one-expression-per-line": "off",
