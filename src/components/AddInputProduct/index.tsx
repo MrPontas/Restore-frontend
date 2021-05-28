@@ -52,17 +52,15 @@ const AddProduct: React.FC<AddInputProductProps> = ({
   const [sizeSelect, setSizeSelect] = useState<string | undefined>(undefined);
   const [genreSelect, setGenreSelect] = useState<string | undefined>(undefined);
   const [typeSelect, setTypeSelect] = useState<string | undefined>(undefined);
-  const [moldSelect, setMoldSelect] = useState<MoldProps | undefined>(
-    undefined
-  );
-  const [categorySelect, setCategorySelect] = useState<
-    CategoryProps | undefined
-  >(undefined);
-  const [providerSelect, setProviderSelect] = useState<
-    ProviderProps | undefined
-  >(undefined);
+  const [moldSelect, setMoldSelect] =
+    useState<MoldProps | undefined>(undefined);
+  const [categorySelect, setCategorySelect] =
+    useState<CategoryProps | undefined>(undefined);
+  const [providerSelect, setProviderSelect] =
+    useState<ProviderProps | undefined>(undefined);
   const [redirect, setRedirect] = useState(false);
   const [obs, setObs] = useState('');
+  const [measure, setMeasure] = useState('');
 
   const handleSubmit = useCallback(
     async (data) => {
@@ -152,6 +150,7 @@ const AddProduct: React.FC<AddInputProductProps> = ({
           mold: moldSelect,
           provider: providerSelect,
           obs,
+          measure,
         } as ProductProps;
         if (handleSubmitProduct) handleSubmitProduct(product);
       } catch (err) {
@@ -179,6 +178,7 @@ const AddProduct: React.FC<AddInputProductProps> = ({
       typeSelect,
       handleSubmitProduct,
       obs,
+      measure,
     ]
   );
 
@@ -204,7 +204,12 @@ const AddProduct: React.FC<AddInputProductProps> = ({
     },
     [setObs]
   );
-
+  const handleMeasureChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMeasure(e.target.value);
+    },
+    [setMeasure]
+  );
   const handleRedirect = useCallback(() => {
     setRedirect(true);
   }, []);
@@ -266,88 +271,86 @@ const AddProduct: React.FC<AddInputProductProps> = ({
         <h1>Informações</h1>
 
         <InputForm>
-          <div>
-            <LabelInput name="name" label="Nome" />
+          <LabelInput name="name" label="Nome" />
 
-            <LabelInput name="color" label="Cor" />
+          <LabelInput name="color" label="Cor" />
 
-            <LabelInput name="brand" label="Marca" />
-            <Select
-              name="genre"
-              id="genre"
-              options={genreOptions}
-              onChange={handleGenre}
-              label="Gênero"
-              hasDefaultValue
-            />
-            <Select
-              name="size"
-              id="size"
-              options={sizeOptions}
-              onChange={handleSize}
-              label="Tamanho"
-              hasDefaultValue
-            />
-          </div>
-          <div>
-            <Select
-              name="type"
-              id="type"
-              options={typeOptions}
-              onChange={handleType}
-              label="Tipo de compra"
-              hasDefaultValue
-            />
-            <Select
-              name="mold"
-              id="mold"
-              options={molds}
-              onChange={handleMold}
-              label="Modelo"
-              hasDefaultValue
-            />
-
-            <Select
-              name="provider"
-              id="provider"
-              options={providers}
-              onChange={handleProvider}
-              label="Fornecedor"
-              hasDefaultValue
-            />
-            <Select
-              name="category"
-              id="category"
-              options={categories}
-              onChange={handleCategory}
-              label="Categoria"
-              hasDefaultValue
-            />
-          </div>
+          <LabelInput name="brand" label="Marca" />
+          <Select
+            name="mold"
+            id="mold"
+            options={molds}
+            onChange={handleMold}
+            label="Modelo"
+            hasDefaultValue
+          />
+          <Select
+            name="genre"
+            id="genre"
+            options={genreOptions}
+            onChange={handleGenre}
+            label="Gênero"
+            hasDefaultValue
+          />
+          <Select
+            name="size"
+            id="size"
+            options={sizeOptions}
+            onChange={handleSize}
+            label="Tamanho"
+            hasDefaultValue
+          />
+          <Select
+            name="category"
+            id="category"
+            options={categories}
+            onChange={handleCategory}
+            label="Categoria"
+            hasDefaultValue
+          />
+          <Select
+            name="provider"
+            id="provider"
+            options={providers}
+            onChange={handleProvider}
+            label="Fornecedor"
+            hasDefaultValue
+          />
         </InputForm>
         <h1>Valores</h1>
         <InputForm>
-          <div>
-            <InputFloat
-              name="purchase_value"
-              id="purchase_value"
-              label="Valor de compra"
-            />
+          <Select
+            name="type"
+            id="type"
+            options={typeOptions}
+            onChange={handleType}
+            label="Tipo de compra"
+            hasDefaultValue
+          />
+          <InputFloat
+            name="purchase_value"
+            id="purchase_value"
+            label="Valor de compra"
+          />
 
-            <InputFloat
-              label="Valor de venda"
-              name="sale_value"
-              id="sale_value"
-            />
-          </div>
+          <InputFloat
+            label="Valor de venda"
+            name="sale_value"
+            id="sale_value"
+          />
         </InputForm>
         <h1>Observações</h1>
         <Textarea name="obs" onChange={handleObsChange} value={obs} />
-
-        <Button type="submit">Adicionar</Button>
-        <Button type="button" onClick={handleRedirect}>
+        <h1>Medidas</h1>
+        <Textarea
+          name="measure"
+          onChange={handleMeasureChange}
+          value={measure}
+        />
+        <Button id="cancelButton" type="button" onClick={handleRedirect}>
           Cancelar
         </Button>
+        <Button type="submit">Adicionar</Button>
       </Form>
     </Container>
   );

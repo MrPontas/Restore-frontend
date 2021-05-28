@@ -59,9 +59,8 @@ const Alert: React.FC<AlertProps> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
   const [isDescriptionFocused, setIsDesciptionFocused] = useState(false);
-  const [category, setCategory] = useState<CategoryProps | undefined>(
-    undefined
-  );
+  const [category, setCategory] =
+    useState<CategoryProps | undefined>(undefined);
   const [description, setDescription] = useState('');
 
   const classes = useStyles();

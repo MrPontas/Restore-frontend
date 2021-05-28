@@ -6,7 +6,7 @@ export const getDateWithoutHoursBr = (date: string): string => {
   return hourBR;
 };
 
-const getDateBr = (date: string | Date): string => {
+const getDateBr = (date: string | Date, gmt = -3): string => {
   let hour;
   if (typeof date === 'string') {
     hour = parseISO(date);
@@ -14,7 +14,7 @@ const getDateBr = (date: string | Date): string => {
     hour = date;
   }
   const hourBR = format(
-    hour.setHours(hour.getHours() - 3),
+    hour.setHours(hour.getHours() + gmt),
     `dd'/'MM'/'yy 'às' HH:mm`
   );
   return hourBR;

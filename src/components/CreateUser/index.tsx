@@ -16,7 +16,6 @@ import LabelInput from '../LabelInput';
 import { UserProps } from '../../utils/props';
 import { useToast } from '../../hooks/ToastContext';
 import getValidationErrors from '../../utils/getValidationErrors';
-import api from '../../services/api';
 
 export type UserCreated = Partial<UserProps>;
 

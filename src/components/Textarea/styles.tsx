@@ -14,7 +14,6 @@ export const Container = styled.div<ContainerProps>`
   max-width: 550px;
   max-height: 200px;
   width: 100%;
-  margin-left: 15px;
   /* height: 100%; */
 
   border: 2px solid #444444;

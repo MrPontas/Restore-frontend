@@ -2,11 +2,9 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  position: absolute;
-  top: 70px;
-  left: 178px;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  margin-left: 200px;
+  margin-top: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;

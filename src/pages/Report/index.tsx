@@ -23,6 +23,10 @@ const Report: React.FC = () => {
   const end = new URLSearchParams(search).get('end');
 
   useEffect(() => {
+    document.title = `Relatório Re-Store`;
+  }, []);
+
+  useEffect(() => {
     api
       .get(`products/?status=${type}&start=${start}&end=${end}`)
       .then((response) => {
@@ -55,7 +59,7 @@ const Report: React.FC = () => {
               De {getDateWithoutHoursBr(start as string)} até{' '}
               {getDateWithoutHoursBr(end as string)}
             </p>
-            <p>Gerado em {generatedDate(new Date())}hrs</p>
+            <p>Gerado em {generatedDate(new Date(), 0)}hrs</p>
             <Values>
               <p>
                 Valor total de compra:{' '}

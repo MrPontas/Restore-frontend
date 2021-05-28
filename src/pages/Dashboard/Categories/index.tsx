@@ -7,8 +7,10 @@ import CreateCategory, {
   CategoryCreated,
 } from '../../../components/CreateCategory';
 import EditCategory from '../../../components/EditCategory';
+import Container from '../../../components/PageContainer';
+import Title from '../../../components/Title';
 
-import { Title, Container, ButtonDiv, StyledButton } from './styles';
+import { ButtonDiv, StyledButton } from './styles';
 import api from '../../../services/api';
 import Alert from '../../../components/GenericAlert';
 import { useToast } from '../../../hooks/ToastContext';

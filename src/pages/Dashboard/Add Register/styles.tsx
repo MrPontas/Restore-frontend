@@ -1,26 +1,13 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
-export const Container = styled.div`
-  display: flex;
-  position: absolute;
-  top: 70px;
-  left: 178px;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  overflow-y: scroll;
-`;
-
 export const Content = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   color: black;
-  margin: 50px 0 50px 50px;
+  margin: 20px 0 20px 20px;
   h2 {
     display: flex;
     flex-direction: row;
@@ -34,7 +21,6 @@ export const Content = styled.div`
 
 export const ButtonDiv = styled.div`
   display: flex;
-  /* justify-content: flex-end; */
 
   button {
     display: flex;

@@ -19,7 +19,6 @@ export const Container = styled.div`
     p {
       display: flex;
       text-align: left;
-      /* margin-left: 30px; */
     }
   }
   select {
@@ -35,7 +34,7 @@ export const Content = styled.div<ContainerProps>`
   align-items: flex-start;
 
   border: 2px solid #444444;
-  background-color: #fff;
+  background-color: transparent;
 
   justify-content: flex-start;
 
@@ -47,6 +46,7 @@ export const Content = styled.div<ContainerProps>`
   &:focus {
     border-color: #82af99;
   }
+
   select {
     ${(props) =>
       props.readOnly &&
@@ -55,6 +55,7 @@ export const Content = styled.div<ContainerProps>`
 
         pointer-events: none;
       `}
+    cursor: pointer;
     color: #232129;
     background: transparent;
     flex: 1;

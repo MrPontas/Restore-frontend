@@ -3,15 +3,14 @@ import { NavLink } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { BiSearch } from 'react-icons/bi';
+import { HiOutlineViewGridAdd } from 'react-icons/hi';
 import { searchRegisterOptions, RegisterProps } from '../../../utils/props';
 
 import Table from '../../../components/RegisterTable';
+import Title from '../../../components/Title';
 
 import {
-  Title,
   Container,
-  ButtonDiv,
-  SearchDiv,
   ContentHeader,
   StyledButton,
   FormButton,
@@ -28,9 +27,8 @@ interface DateProps {
 const Registers: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const [finishedData, setFinishedData] = useState(false);
-  const [registers, setRegisters] = useState<RegisterProps[] | undefined>(
-    undefined
-  );
+  const [registers, setRegisters] =
+    useState<RegisterProps[] | undefined>(undefined);
   const [registerType, setRegisterType] = useState('A');
 
   useEffect(() => {
@@ -70,26 +68,25 @@ const Registers: React.FC = () => {
         <h1>Registros</h1>
       </Title>
       <ContentHeader>
-        <SearchDiv>
-          <Form ref={formRef} onSubmit={handleSearch}>
-            <StyledInputLabel label="De" name="start" type="date" />
-            <StyledInputLabel label="Até" name="end" type="date" />
-            <StyledSelect
-              id="selectType"
-              label="Tipo:"
-              options={searchRegisterOptions}
-              onChange={handleChange}
-            />
-            <FormButton type="submit">
-              <BiSearch size={30} />
-            </FormButton>
-          </Form>
-        </SearchDiv>
-        <ButtonDiv>
-          <NavLink to="/dashboard/addRegister">
-            <StyledButton>Adicionar registro</StyledButton>
-          </NavLink>
-        </ButtonDiv>
+        <Form ref={formRef} onSubmit={handleSearch}>
+          <StyledInputLabel label="De" name="start" type="date" />
+          <StyledInputLabel label="Até" name="end" type="date" />
+          <StyledSelect
+            id="selectType"
+            label="Tipo:"
+            options={searchRegisterOptions}
+            onChange={handleChange}
+          />
+          <FormButton type="submit">
+            <BiSearch size={30} />
+          </FormButton>
+        </Form>
+        <NavLink to="/dashboard/addRegister" style={{ textDecoration: 'none' }}>
+          <StyledButton>
+            <HiOutlineViewGridAdd />
+            Adicionar registro
+          </StyledButton>
+        </NavLink>
       </ContentHeader>
       <Table finishedData={finishedData} registers={registers} />
     </Container>

@@ -7,9 +7,10 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 
 import { BiSearch } from 'react-icons/bi';
-import { Container, ButtonDiv, InfoDiv, SearchDiv } from './styles';
+import { ButtonDiv, InfoDiv, SearchDiv } from './styles';
 import api from '../../../services/api';
 
+import Container from '../../../components/PageContainer';
 import Title from '../../../components/Title';
 import Loading from '../../../components/Loading';
 import Alert from '../../../components/Alert';
@@ -35,12 +36,10 @@ const RegisterView: React.FC = () => {
 
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
-  const [products, setProducts] = useState<ProductProps[] | undefined>(
-    undefined
-  );
-  const [register, setRegister] = useState<RegisterProps | undefined>(
-    undefined
-  );
+  const [products, setProducts] =
+    useState<ProductProps[] | undefined>(undefined);
+  const [register, setRegister] =
+    useState<RegisterProps | undefined>(undefined);
   const [productsBuffer, setProductsBuffer] = useState({} as ProductProps[]);
 
   const handleSearch = useCallback(
@@ -60,18 +59,32 @@ const RegisterView: React.FC = () => {
   );
 
   const handleConfirm = useCallback(() => {
-    try {
-      api.delete(`registers/${register?.id}`);
-      addToast({
-        type: 'success',
-        title: 'Registro excluído com sucesso.',
+    api
+      .delete(`registers/${register?.id}`)
+      .then(() => {
+        addToast({
+          type: 'success',
+          title: 'Registro excluído com sucesso.',
+        });
+        setTimeout(() => {
+          history.go(-1);
+        }, 1000);
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          addToast({
+            title: 'Registro não encontrado',
+            type: 'error',
+          });
+        }
+        if (error.response.status === 400) {
+          addToast({
+            title: 'Não foi possível excluir o registro',
+            type: 'error',
+            description: 'Parece que algum produto está registrado como saída.',
+          });
+        }
       });
-      setTimeout(() => {
-        history.go(-1);
-      }, 1000);
-    } catch (err) {
-      throw new Error(err);
-    }
   }, [register, addToast, history]);
 
   useEffect(() => {

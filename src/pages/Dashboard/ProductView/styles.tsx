@@ -6,16 +6,15 @@ interface StatusProps {
 }
 
 export const Container = styled.div`
+  width: 100%;
+  height: fit-content;
   display: flex;
-  height: auto;
-  position: fixed;
-  top: 70px;
-  left: 178px;
-  right: 0;
-  bottom: 0;
+  margin-left: 200px;
+  margin-top: 70px;
   flex-direction: column;
-  overflow-y: scroll;
+  align-items: center;
   background-color: #fff;
+  background-attachment: fixed;
   color: #000;
 
   form {
@@ -24,7 +23,7 @@ export const Container = styled.div`
     width: calc(100% - 65px);
     h1,
     h2 {
-      margin: 0 0 20px 20px;
+      margin: 20px;
     }
 
     button {
@@ -37,22 +36,14 @@ export const Container = styled.div`
 
 export const InputForm = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-bottom: 40px;
+  width: calc(100% - 80px);
+  flex-wrap: wrap;
+  min-width: 900px;
+  justify-self: center;
 
   div {
-    display: flex;
-    /* max-width: 600px; */
-    & + div {
-      margin-top: 20px;
-    }
-
-    div {
-      align-self: center;
-      max-width: 260px;
-
-      margin: 0 15px 0 15px;
-    }
+    max-width: 260px;
+    margin-right: 20px;
   }
 `;
 
@@ -73,14 +64,13 @@ export const StatusDiv = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 `;
 
 export const Status = styled.div<StatusProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 20px;
 
   svg {
     margin-left: 10px;

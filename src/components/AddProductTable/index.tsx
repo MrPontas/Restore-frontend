@@ -12,8 +12,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { FaRegEdit } from 'react-icons/fa';
-import { SiIfixit } from 'react-icons/si';
 
 import EditProduct from '../EditProduct';
 
@@ -95,15 +93,9 @@ const CustomizedTables: React.FC<TableProps> = ({
 }) => {
   const classes = useStyles();
   const [editProduct, setEditProduct] = useState(false);
-  const [productToEdit, setProductToEdit] = useState<ProductProps>(
-    {} as ProductProps
-  );
-  const [productsTable, setProductsTable] = useState<ProductProps[]>(products);
+  const [productToEdit] = useState<ProductProps>({} as ProductProps);
+  const [productsTable] = useState<ProductProps[]>(products);
 
-  const handleEdit = useCallback((product: ProductProps) => {
-    setEditProduct(true);
-    setProductToEdit(product);
-  }, []);
   const handleEditedProduct = useCallback(
     (data: ProductProps) => {
       setEditProduct(false);
@@ -146,23 +138,10 @@ const CustomizedTables: React.FC<TableProps> = ({
                       currency: 'BRL',
                     })}
                   </StyledTableCell>
-                  <StyledTableCell align="left" className={classes.buttonCell}>
-                    {/* <button
-                      id="edit-button"
-                      type="button"
-                      onClick={() => handleEdit(product)}
-                      className={classes.button}
-                    >
-                      <FaRegEdit size={20} />
-                    </button> */}
-                    {/* <button
-                      id="exclude-button"
-                      type="button"
-                      className={classes.excludeButton}
-                    >
-                      <SiIfixit size={20} />
-                    </button> */}
-                  </StyledTableCell>
+                  <StyledTableCell
+                    align="left"
+                    className={classes.buttonCell}
+                  />
                 </StyledTableRow>
               ))}
             </TableBody>

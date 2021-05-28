@@ -6,10 +6,13 @@ import UsersTable from '../../../components/UsersTable';
 import CreateUser, { UserCreated } from '../../../components/CreateUser';
 import EditUser from '../../../components/EditUser';
 
-import { Title, Container, ButtonDiv, StyledButton } from './styles';
+import { ButtonDiv, StyledButton } from './styles';
 import api from '../../../services/api';
 import { UserProps } from '../../../utils/props';
 import Alert from '../../../components/GenericAlert';
+import Container from '../../../components/PageContainer';
+import Title from '../../../components/Title';
+
 import { useToast } from '../../../hooks/ToastContext';
 
 const Users: React.FC = () => {

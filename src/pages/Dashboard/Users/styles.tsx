@@ -1,32 +1,6 @@
 import styled from 'styled-components';
 import Button from '../../../components/Button';
 
-export const Container = styled.div`
-  display: flex;
-  position: absolute;
-  top: 70px;
-  left: 178px;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-`;
-
-export const Title = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  /* background-color: #000; */
-  border-bottom: 1px solid #312e38;
-
-  h1 {
-    color: #000;
-    padding: 20px;
-    margin-right: calc(100% - 600px);
-  }
-`;
-
 export const ButtonDiv = styled.div`
   display: flex;
   width: 100%;

@@ -4,6 +4,7 @@ import { AiFillCheckCircle } from 'react-icons/ai';
 import { MdCancel } from 'react-icons/md';
 
 import { Redirect } from 'react-router-dom';
+import { FiSave } from 'react-icons/fi';
 import Table from '../../../components/AddProductTable';
 import Title from '../../../components/Title';
 import AddInputProduct from '../../../components/AddInputProduct';
@@ -12,23 +13,17 @@ import AddOutputProduct from '../../../components/AddOutputProduct';
 import Select from '../../../components/Select';
 import Button from '../../../components/Button';
 import Alert from '../../../components/Alert';
+import Container from '../../../components/PageContainer';
 
-import {
-  Container,
-  Content,
-  ButtonDiv,
-  ButtonSave,
-  ButtonOutDiv,
-} from './styles';
+import { Content, ButtonDiv, ButtonSave, ButtonOutDiv } from './styles';
 import { ProductProps, registerOptions } from '../../../utils/props';
 import api from '../../../services/api';
 import { useToast } from '../../../hooks/ToastContext';
 
 const AddRegister: React.FC = () => {
   const [registerType, setRegisterType] = useState('I');
-  const [products, setProducts] = useState<ProductProps[] | undefined>(
-    undefined
-  );
+  const [products, setProducts] =
+    useState<ProductProps[] | undefined>(undefined);
   const [registerCreated, setRegisterCreated] = useState(false);
 
   const [readOnly, setReadOnly] = useState(false);
@@ -119,7 +114,7 @@ const AddRegister: React.FC = () => {
   }, []);
   if (toRegister) return <Redirect to="registers" />;
   return (
-    <Container>
+    <Container whiteBackground>
       {registerCreated && <Redirect to="/dashboard/registers" />}
       <Title>
         <h1>Adicionar registro</h1>
@@ -177,7 +172,10 @@ const AddRegister: React.FC = () => {
 
       {products && products.length > 0 && !addProduct ? (
         <ButtonSave>
-          <Button onClick={handleSubmit}>Salvar registro</Button>
+          <Button onClick={handleSubmit}>
+            <FiSave />
+            Salvar registro
+          </Button>
         </ButtonSave>
       ) : (
         ''

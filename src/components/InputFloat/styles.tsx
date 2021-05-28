@@ -8,7 +8,6 @@ interface ContainerProps {
 }
 
 export const Container = styled.div`
-  margin-bottom: 10px;
   flex-direction: column;
   align-items: left;
   max-width: 20px;

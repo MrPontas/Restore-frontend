@@ -113,6 +113,7 @@ const ProductView: React.FC = () => {
           color: data.color,
           brand: data.brand,
           obs: data.obs,
+          measure: data.measure,
           purchase_value: purchaseValue,
           sale_value: saleValue,
           genre: genreSelect,
@@ -252,107 +253,102 @@ const ProductView: React.FC = () => {
             </Status>
           </StatusDiv>
           <InputForm>
-            <div>
-              <LabelInput
-                name="name"
-                label="Nome"
-                defaultValue={product.name}
-                readOnly={readOnly}
-              />
+            <LabelInput
+              name="name"
+              label="Nome"
+              defaultValue={product.name}
+              readOnly={readOnly}
+            />
 
-              <LabelInput
-                name="color"
-                label="Cor"
-                defaultValue={product.color}
-                readOnly={readOnly}
-              />
+            <LabelInput
+              name="color"
+              label="Cor"
+              defaultValue={product.color}
+              readOnly={readOnly}
+            />
 
-              <LabelInput
-                name="brand"
-                label="Marca"
-                defaultValue={product.brand}
-                readOnly={readOnly}
-              />
-              <Select
-                name="genre"
-                id="genre"
-                options={genreOptions}
-                onChange={handleGenre}
-                label="Gênero"
-                defaultValue={product.genre}
-                readOnly={readOnly}
-              />
-              <Select
-                name="size"
-                id="size"
-                options={sizeOptions}
-                onChange={handleSize}
-                label="Tamanho"
-                defaultValue={product.size}
-                readOnly={readOnly}
-              />
-            </div>
-            <div>
-              <Select
-                name="type"
-                id="type"
-                options={typeOptions}
-                onChange={handleType}
-                label="Tipo de compra"
-                defaultValue={
-                  product.purchase_type === 'O' ? 'Próprio' : 'Consignado'
-                }
-                readOnly={readOnly}
-              />
-              <Select
-                name="mold"
-                id="mold"
-                options={molds}
-                onChange={handleMold}
-                label="Modelo"
-                defaultValue={product.mold.name}
-                readOnly={readOnly}
-              />
+            <LabelInput
+              name="brand"
+              label="Marca"
+              defaultValue={product.brand}
+              readOnly={readOnly}
+            />
+            <Select
+              name="mold"
+              id="mold"
+              options={molds}
+              onChange={handleMold}
+              label="Modelo"
+              defaultValue={product.mold.name}
+              readOnly={readOnly}
+            />
+            <Select
+              name="genre"
+              id="genre"
+              options={genreOptions}
+              onChange={handleGenre}
+              label="Gênero"
+              defaultValue={product.genre}
+              readOnly={readOnly}
+            />
+            <Select
+              name="size"
+              id="size"
+              options={sizeOptions}
+              onChange={handleSize}
+              label="Tamanho"
+              defaultValue={product.size}
+              readOnly={readOnly}
+            />
 
-              <Select
-                name="provider"
-                id="provider"
-                options={providers}
-                onChange={handleProvider}
-                label="Fornecedor"
-                defaultValue={product.provider.name}
-                readOnly={readOnly}
-              />
+            <Select
+              name="category"
+              id="category"
+              options={categories}
+              onChange={handleCategory}
+              label="Categoria"
+              defaultValue={product.category.name}
+              readOnly={readOnly}
+            />
 
-              <Select
-                name="category"
-                id="category"
-                options={categories}
-                onChange={handleCategory}
-                label="Categoria"
-                defaultValue={product.category.name}
-                readOnly={readOnly}
-              />
-            </div>
+            <Select
+              name="provider"
+              id="provider"
+              options={providers}
+              onChange={handleProvider}
+              label="Fornecedor"
+              defaultValue={product.provider.name}
+              readOnly={readOnly}
+            />
           </InputForm>
           <h1>Valores</h1>
+
           <InputForm>
-            <div>
-              <InputFloat
-                name="purchase_value"
-                id="purchase_value"
-                label="Valor de compra"
-                defaultValue={handleDefaultValue(product.purchase_value)}
-                readOnly={readOnly}
-              />
-              <InputFloat
-                label="Valor de venda"
-                name="sale_value"
-                id="sale_value"
-                defaultValue={handleDefaultValue(product.sale_value)}
-                readOnly={readOnly}
-              />
-            </div>
+            <Select
+              name="type"
+              id="type"
+              options={typeOptions}
+              onChange={handleType}
+              label="Tipo de compra"
+              defaultValue={
+                product.purchase_type === 'O' ? 'Próprio' : 'Consignado'
+              }
+              readOnly={readOnly}
+            />
+            <InputFloat
+              name="purchase_value"
+              id="purchase_value"
+              label="Valor de compra"
+              defaultValue={handleDefaultValue(product.purchase_value)}
+              readOnly={readOnly}
+            />
+            <InputFloat
+              label="Valor de venda"
+              name="sale_value"
+              id="sale_value"
+              defaultValue={handleDefaultValue(product.sale_value)}
+              readOnly={readOnly}
+            />
           </InputForm>
           <h1>Observações</h1>
 
@@ -361,6 +357,13 @@ const ProductView: React.FC = () => {
             id="obsContainer"
             readOnly={readOnly}
             defaultValue={product.obs}
+          />
+          <h1>Medidas</h1>
+          <Textarea
+            name="measure"
+            id="measureContainer"
+            readOnly={readOnly}
+            defaultValue={product.measure}
           />
 
           {edition && <Button type="submit">Salvar</Button>}

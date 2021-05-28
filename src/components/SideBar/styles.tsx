@@ -10,7 +10,8 @@ export const Container = styled.div`
   flex-direction: column;
 
   background-color: #fff;
-  max-width: 400px;
+  max-width: 200px;
+  width: 100%;
   border-right: 1px solid #a8a8a8;
   padding: 0 10px 0 10px;
 

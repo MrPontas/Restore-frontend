@@ -34,6 +34,7 @@ export interface ProductProps {
   status: string;
   createdAt: string;
   obs: string;
+  measure: string;
   purchase_type: string;
   sale_value: number;
   purchase_value: number;

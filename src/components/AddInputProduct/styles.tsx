@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
+
 import Tooltip from '../Tooltip';
 
 export const Container = styled.div`
-  display: flex;
-  position: flex;
-  flex-direction: column;
-  /* overflow-y: scroll; */
   background-color: #fff;
+  background-attachment: fixed;
   color: #000;
   form {
     padding-bottom: 40px;
@@ -15,18 +13,18 @@ export const Container = styled.div`
     width: calc(100% - 65px);
     h1,
     h2 {
-      margin: 0 0 20px 20px;
+      margin: 20px;
     }
 
     button {
       color: white;
-      max-width: 200px;
-      margin-left: 20px;
-      & + button {
-        background-color: #b6b6b6;
-        &:hover {
-          background: ${shade(0.2, '#b6b6b6')};
-        }
+      max-width: 100px;
+      margin-left: 15px;
+    }
+    #cancelButton {
+      background-color: #b6b6b6;
+      &:hover {
+        background-color: ${shade(0.2, '#b6b6b6')};
       }
     }
   }
@@ -34,22 +32,14 @@ export const Container = styled.div`
 
 export const InputForm = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-bottom: 40px;
+  width: calc(100% - 80px);
+  flex-wrap: wrap;
+  min-width: 900px;
+  justify-self: center;
 
   div {
-    display: flex;
-    /* max-width: 600px; */
-    & + div {
-      margin-top: 20px;
-    }
-
-    div {
-      align-self: center;
-      max-width: 260px;
-
-      margin: 0 15px 0 15px;
-    }
+    max-width: 260px;
+    margin-right: 20px;
   }
 `;
 
@@ -62,16 +52,6 @@ export const ButtonDiv = styled.div`
     color: white;
     width: 100px;
     margin-right: 50px;
-  }
-`;
-
-export const Status = styled.div`
-  display: flex;
-  width: 100%;
-  margin-top: 30px;
-
-  span {
-    margin-top: 10px;
   }
 `;
 
