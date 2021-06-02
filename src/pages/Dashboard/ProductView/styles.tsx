@@ -26,10 +26,26 @@ export const Container = styled.div`
       margin: 20px;
     }
 
+    #cancelButton {
+      background-color: #b6b6b6;
+
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: ${shade(0.2, '#B6B6B6')};
+      }
+    }
     button {
       color: white;
+      background-color: #82af99;
       max-width: 100px;
       margin-left: 15px;
+
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: ${shade(0.2, '#82af99')};
+      }
     }
   }
 `;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { VscSymbolKeyword } from 'react-icons/vsc';
 import { RiShirtLine } from 'react-icons/ri';
-import { FiUsers } from 'react-icons/fi';
+import { FiUsers, FiLayout, FiBriefcase } from 'react-icons/fi';
 import { MdChromeReaderMode } from 'react-icons/md';
 // import { IoIosPaper } from 'react-icons/io';
 
@@ -63,6 +63,15 @@ const SideBar: React.FC = () => {
         <MdChromeReaderMode size={30} />
         Categorias
       </StyledNavLink>
+      <StyledNavLink
+        to="/dashboard/providers"
+        activeStyle={activeStyle}
+        style={style}
+      >
+        <FiBriefcase size={30} />
+        Fornecedores
+      </StyledNavLink>
+
       {user.administrator && (
         <StyledNavLink
           to="/dashboard/users"

@@ -5,7 +5,7 @@ import { FiPrinter } from 'react-icons/fi';
 import InputReport from '../../components/InputReport';
 import api from '../../services/api';
 import generatedDate, { getDateWithoutHoursBr } from '../../utils/getDateBr';
-import { ProductProps } from '../../utils/props';
+import { ProductProps, UserProps } from '../../utils/props';
 import Loading from '../../components/Loading';
 
 import { Container, Content, Header, Values, PrintSpan } from './styles';
@@ -17,6 +17,7 @@ const Report: React.FC = () => {
   const [finishedData, setFinishedData] = useState(false);
   const [totalPurchase, setTotalPurchase] = useState(0);
   const [totalSale, setTotalSale] = useState(0);
+  const [userObject, setUserObject] = useState({} as UserProps);
 
   const type = new URLSearchParams(search).get('type');
   const start = new URLSearchParams(search).get('start');
@@ -24,6 +25,11 @@ const Report: React.FC = () => {
 
   useEffect(() => {
     document.title = `Relatório Re-Store`;
+    const user = localStorage.getItem('@ReStore:user');
+    if (!user) {
+      throw new Error(`Can't find authenticated user.`);
+    }
+    setUserObject(JSON.parse(user));
   }, []);
 
   useEffect(() => {
@@ -59,7 +65,9 @@ const Report: React.FC = () => {
               De {getDateWithoutHoursBr(start as string)} até{' '}
               {getDateWithoutHoursBr(end as string)}
             </p>
-            <p>Gerado em {generatedDate(new Date(), 0)}hrs</p>
+            <p>
+              Gerado em {generatedDate(new Date(), 0)}hrs por {userObject.name}
+            </p>
             <Values>
               <p>
                 Valor total de compra:{' '}

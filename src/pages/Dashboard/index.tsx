@@ -19,6 +19,8 @@ import RegisterView from './RegisterView';
 import AddRegister from './Add Register';
 
 import Categories from './Categories';
+import Providers from './Providers';
+import Models from './Models';
 
 const Dashboard: React.FC = () => {
   const { signOut, ensureAuthenticated } = useAuth();
@@ -73,6 +75,8 @@ const Dashboard: React.FC = () => {
         />
         <Route path="/dashboard/users" component={Users} isPrivate isStrict />
         <Route path="/dashboard/categories" component={Categories} isPrivate />
+        <Route path="/dashboard/providers" component={Providers} isPrivate />
+        <Route path="/dashboard/models" component={Models} isPrivate />
       </Switch>
 
       <Background />

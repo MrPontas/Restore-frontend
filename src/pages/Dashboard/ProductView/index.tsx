@@ -366,7 +366,14 @@ const ProductView: React.FC = () => {
             defaultValue={product.measure}
           />
 
-          {edition && <Button type="submit">Salvar</Button>}
+          {edition && (
+            <>
+              <Button id="cancelButton" type="button">
+                Cancelar
+              </Button>
+              <Button type="submit">Salvar</Button>
+            </>
+          )}
         </Form>
       </Container>
     );
